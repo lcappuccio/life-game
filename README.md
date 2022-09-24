@@ -5,7 +5,7 @@
 [Conway's Game Life](http://en.wikipedia.org/wiki/Conway%27s_Game_of_Life) java/swing implementation
 
 [![Build Status](https://github.com/lcappuccio/life-game/workflows/Build%20life-game%20with%20xvfb/badge.svg)](https://github.com/lcappuccio/life-game/actions)
-[![codebeat badge](https://codebeat.co/badges/01266f8b-6e70-4564-8542-a0d0b4fdab60)](https://codebeat.co/projects/github-com-lcappuccio-life-game)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=lcappuccio_life-game&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=lcappuccio_life-game)
 
 ## Installation
 
