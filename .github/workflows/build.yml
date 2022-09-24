@@ -2,9 +2,9 @@ name: Build life-game with xvfb
 
 on:
   push:
-    branches: [ "master", "develop" ]
+    branches: [ "master" ]
   pull_request:
-    branches: [ "master", "develop" ]
+    branches: [ "master" ]
 
 jobs:
   build:
