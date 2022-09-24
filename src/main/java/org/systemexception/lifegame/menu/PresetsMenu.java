@@ -7,12 +7,16 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * @author leo
  * @date 22/09/15 23:01
  */
 public class PresetsMenu extends JMenu {
+
+    private static final Logger LOGGER = Logger.getLogger(PresetsMenu.class.getName());
 
 	public static final String PRESET_7468M = "7468M.life";
     public static final String PRESET_ACORN = "acorn.life";
@@ -53,7 +57,7 @@ public class PresetsMenu extends JMenu {
 				MainGui.openFile(new File(TEMP_LIFE_PRESET));
 				tempFile.deleteOnExit();
 			} catch (IOException ex) {
-				ex.printStackTrace();
+				LOGGER.log(Level.SEVERE, ex.getMessage());
 			}
 		});
 		return jMenuItem;
