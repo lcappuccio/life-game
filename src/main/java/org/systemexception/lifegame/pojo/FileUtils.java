@@ -15,19 +15,23 @@ public class FileUtils {
 
 	private static final String EMPTY_STRING = "";
 
+    private FileUtils() {}
+
 	public static GridGui gridGuiFromFile(final File file) throws IOException {
 
 		List<List<String>> gridGuiAsArrayList = new ArrayList<>();
 		String line;
 		Properties properties = new Properties();
-		BufferedReader fileReader = new BufferedReader(new FileReader(file));
-		while ((line = fileReader.readLine()) != null) {
-			if (!line.startsWith(FileMenu.FILE_PROPERTIES_LINE)) {
-				gridGuiAsArrayList.add(getBoardLineFrom(line));
-			} else {
-				properties.load(new StringReader(line.replace(FileMenu.FILE_PROPERTIES_LINE, EMPTY_STRING)));
-			}
-		}
+        try(BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
+            while ((line = fileReader.readLine()) != null) {
+                if (!line.startsWith(FileMenu.FILE_PROPERTIES_LINE)) {
+                    gridGuiAsArrayList.add(getBoardLineFrom(line));
+                } else {
+                    properties.load(new StringReader(line.replace(FileMenu.FILE_PROPERTIES_LINE, EMPTY_STRING)));
+                }
+            }
+        }
+
 		int cellSize = Integer.parseInt(properties.getProperty(SavedBoardProperties.CELLSIZE.toString()));
 		int gridCols = Integer.parseInt(properties.getProperty(SavedBoardProperties.COLS.toString()));
 		int gridRows = Integer.parseInt(properties.getProperty(SavedBoardProperties.ROWS.toString()));
