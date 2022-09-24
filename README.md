@@ -6,7 +6,6 @@
 
 [![Build Status](https://github.com/lcappuccio/life-game/workflows/Build%20life-game%20with%20xvfb/badge.svg)]
 (https://github.com/lcappuccio/life-game/actions)
-[![codecov.io](https://codecov.io/github/lcappuccio/life-game/coverage.svg?branch=master)](https://codecov.io/github/lcappuccio/life-game?branch=master)
 [![codebeat badge](https://codebeat.co/badges/01266f8b-6e70-4564-8542-a0d0b4fdab60)](https://codebeat.co/projects/github-com-lcappuccio-life-game)
 
 ## Installation
