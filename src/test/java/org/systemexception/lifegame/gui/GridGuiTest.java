@@ -2,7 +2,6 @@ package org.systemexception.lifegame.gui;
 
 import org.junit.Test;
 import org.systemexception.lifegame.model.Board;
-import org.systemexception.lifegame.model.Cell;
 
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
@@ -27,17 +26,6 @@ public class GridGuiTest {
 		Board board = sut.getBoard();
 		assertTrue(board.getBoardCols() > 0);
 		assertTrue(board.getBoardRows() > 0);
-	}
-
-	@Test
-	public void testGridBoardHasCells() {
-		Board board = sut.getBoard();
-		for (int i = 0; i < board.getBoardRows(); i++) {
-			for (int j = 0; j < board.getBoardCols(); j++) {
-				Cell cell = board.getCellAt(i, j);
-				assertNotNull(cell);
-			}
-		}
 	}
 
 	@Test

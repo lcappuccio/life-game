@@ -6,7 +6,6 @@ package org.systemexception.lifegame.gui;
 
 import org.systemexception.lifegame.enums.Themes;
 import org.systemexception.lifegame.model.Board;
-import org.systemexception.lifegame.model.Cell;
 
 import javax.swing.*;
 import java.awt.*;
@@ -34,12 +33,10 @@ public class GridGui extends JComponent {
 		this.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				Cell cell = board.getCellAt(e.getX() / cellSize, e.getY() / cellSize);
-				if (cell.getCellState()) {
-					cell.setCellDead();
-				} else {
-					cell.setCellAlive();
-				}
+                int i = e.getX() / cellSize;
+                int j = e.getY() / cellSize;
+                boolean cellState = board.getCellAt(i, j);
+				board.setCellAt(i, j, !cellState);
 				getParent().repaint();
 			}
 
@@ -150,11 +147,10 @@ public class GridGui extends JComponent {
 
 	@Override
 	public void paintComponent(Graphics graphics) {
-        final Graphics2D graphics2D = (Graphics2D) graphics;
         for (int i = 0; i < gridRows; i++) {
 			for (int j = 0; j <gridCols; j++) {
-                graphics2D.setColor(board.getCellAt(i, j).getCellState() ? colorLight : colorDark);
-                graphics2D.fillRect(cellSize * i, cellSize * j, cellSize, cellSize);
+                graphics.setColor(board.getCellAt(i, j) ? colorLight : colorDark);
+                graphics.fillRect(cellSize * i, cellSize * j, cellSize, cellSize);
             }
 		}
 		totalLiveCells = board.getCellAliveCount();
