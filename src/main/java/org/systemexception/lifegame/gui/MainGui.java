@@ -35,8 +35,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class MainGui {
+
+    private static final Logger LOGGER = Logger.getLogger(MainGui.class.getName());
 
 	public static final String FONT_NAME = "Lucida Grande", APP_NAME = "LifeGame";
 	public static final Font MENU_FONT = new Font(FONT_NAME, Font.BOLD, 12);
@@ -70,21 +73,23 @@ public class MainGui {
     private JLabel lblIteration;
 	private JPanel lowerPanel;
 
+    private static MainGui mainGui;
+
 	/**
 	 * Launch the application.
 	 *
 	 * @param args UNUSED
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				MainGui window = new MainGui();
-				window.mainAppWindow.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace(System.out);
-			}
-		});
+		EventQueue.invokeLater(MainGui::getInstance);
 	}
+
+    public static void getInstance() {
+        if (mainGui == null) {
+            mainGui = new MainGui();
+            mainGui.mainAppWindow.setVisible(true);
+        }
+    }
 
 	/**
 	 * Create the application.
@@ -97,19 +102,14 @@ public class MainGui {
 					UIManager.setLookAndFeel(info.getClassName());
 				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
 						UnsupportedLookAndFeelException e) {
-					e.printStackTrace(System.out);
+                    LOGGER.severe(e.getMessage());
 				}
 				break;
 			}
 
 		}
-		if (PLATFORM.contains("windows")) {
-			mainAppWindowHeightExclude = 99;
-			panelAndLabelHeightExclude = 70;
-		} else {
-			mainAppWindowHeightExclude = 80;
-			panelAndLabelHeightExclude = 52;
-		}
+        mainAppWindowHeightExclude = 99;
+        panelAndLabelHeightExclude = 70;
 		// Set menu accelerator enabler key varies on PLATFORM
 		if (PLATFORM.contains("linux") || PLATFORM.contains("windows")) {
 			metaKey = InputEvent.CTRL_DOWN_MASK;
@@ -190,7 +190,7 @@ public class MainGui {
 		gridGui = FileUtils.gridGuiFromFile(selectedFile);
 		centerPanel.add(gridGui);
 		lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
-		iterationCounter = Integer.valueOf(lblCountIteration.getText());
+		iterationCounter = Integer.parseInt(lblCountIteration.getText());
 	}
 
 	private void setWindowSize() {

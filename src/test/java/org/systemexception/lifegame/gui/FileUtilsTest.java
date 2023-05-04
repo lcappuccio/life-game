@@ -8,6 +8,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Objects;
 
 import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertNotNull;
@@ -17,17 +18,15 @@ import static junit.framework.TestCase.assertNotNull;
  */
 public class FileUtilsTest {
 
-	private static final MainGui mainGui = new MainGui();
-
 	@BeforeClass
 	public static void setUp() {
-		mainGui.main(null);
+		MainGui.getInstance();
 	}
 
 	@Test
 	public void should_read_preset_file() throws URISyntaxException, IOException {
 		ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-		URI testFileUri = systemClassLoader.getResource("presets/acorn.life").toURI();
+		URI testFileUri = Objects.requireNonNull(systemClassLoader.getResource("presets/acorn.life")).toURI();
 		File testFile = new File(testFileUri);
 		GridGui gridGui = FileUtils.gridGuiFromFile(testFile);
 
