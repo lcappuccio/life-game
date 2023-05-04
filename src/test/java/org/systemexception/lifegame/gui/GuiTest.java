@@ -11,7 +11,6 @@ import org.systemexception.lifegame.menu.PresetsMenu;
 import org.systemexception.lifegame.menu.SpeedMenu;
 
 import javax.swing.*;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,14 +23,13 @@ import static org.junit.Assert.*;
 public class GuiTest {
 
 	private static final LifeGameMenu lifeGameMenu = new LifeGameMenu();
-	private static final MainGui mainGui = new MainGui();
 	private final FileMenu fileMenu = new FileMenu();
 	private final PresetsMenu presetsMenu = new PresetsMenu();
 	private final SpeedMenu speedMenu = new SpeedMenu();
 
 	@BeforeClass
 	public static void setUp() {
-		mainGui.main(null);
+		MainGui.getInstance();
 	}
 
 	@Test
@@ -62,7 +60,7 @@ public class GuiTest {
 	}
 
 	@Test
-	public void presetsMenuTest() throws IOException {
+	public void presetsMenuTest() {
 		assertEquals(7, presetsMenu.getItemCount());
 		List<String> menuItems = new ArrayList<>();
 		for (int i = 0; i < presetsMenu.getItemCount(); i++) {

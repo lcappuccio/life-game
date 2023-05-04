@@ -150,11 +150,12 @@ public class GridGui extends JComponent {
 
 	@Override
 	public void paintComponent(Graphics graphics) {
-		for (int i = 0; i < gridRows; i++) {
+        final Graphics2D graphics2D = (Graphics2D) graphics;
+        for (int i = 0; i < gridRows; i++) {
 			for (int j = 0; j <gridCols; j++) {
-				graphics.setColor(board.getCellAt(i, j).getCellState() ? colorLight : colorDark);
-				graphics.fillRect(cellSize * i, cellSize * j, cellSize, cellSize);
-			}
+                graphics2D.setColor(board.getCellAt(i, j).getCellState() ? colorLight : colorDark);
+                graphics2D.fillRect(cellSize * i, cellSize * j, cellSize, cellSize);
+            }
 		}
 		totalLiveCells = board.getCellAliveCount();
 	}

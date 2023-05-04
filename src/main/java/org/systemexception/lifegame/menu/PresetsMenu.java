@@ -46,6 +46,9 @@ public class PresetsMenu extends JMenu {
 		jMenuItem.addActionListener(actionEvent -> {
 
 			try (InputStream inputStream = this.getClass().getResourceAsStream(PRESETS_FOLDER + fileName)) {
+                if (inputStream == null) {
+                    throw new IOException("Missing presets folder");
+                }
 				FileOutputStream fileOutputStream = new FileOutputStream(new File(TEMP_LIFE_PRESET));
 				int read;
 				byte[] bytes = new byte[1024];

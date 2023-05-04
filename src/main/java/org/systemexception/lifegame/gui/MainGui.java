@@ -70,21 +70,23 @@ public class MainGui {
     private JLabel lblIteration;
 	private JPanel lowerPanel;
 
+    private static MainGui mainGui;
+
 	/**
 	 * Launch the application.
 	 *
 	 * @param args UNUSED
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> {
-			try {
-				MainGui window = new MainGui();
-				window.mainAppWindow.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace(System.out);
-			}
-		});
+		EventQueue.invokeLater(MainGui::getInstance);
 	}
+
+    public static void getInstance() {
+        if (mainGui == null) {
+            mainGui = new MainGui();
+            mainGui.mainAppWindow.setVisible(true);
+        }
+    }
 
 	/**
 	 * Create the application.
@@ -103,13 +105,8 @@ public class MainGui {
 			}
 
 		}
-		if (PLATFORM.contains("windows")) {
-			mainAppWindowHeightExclude = 99;
-			panelAndLabelHeightExclude = 70;
-		} else {
-			mainAppWindowHeightExclude = 80;
-			panelAndLabelHeightExclude = 52;
-		}
+        mainAppWindowHeightExclude = 99;
+        panelAndLabelHeightExclude = 70;
 		// Set menu accelerator enabler key varies on PLATFORM
 		if (PLATFORM.contains("linux") || PLATFORM.contains("windows")) {
 			metaKey = InputEvent.CTRL_DOWN_MASK;
@@ -190,7 +187,7 @@ public class MainGui {
 		gridGui = FileUtils.gridGuiFromFile(selectedFile);
 		centerPanel.add(gridGui);
 		lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
-		iterationCounter = Integer.valueOf(lblCountIteration.getText());
+		iterationCounter = Integer.parseInt(lblCountIteration.getText());
 	}
 
 	private void setWindowSize() {
