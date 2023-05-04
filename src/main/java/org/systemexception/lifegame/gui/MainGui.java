@@ -35,8 +35,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.InputEvent;
 import java.io.File;
 import java.io.IOException;
+import java.util.logging.Logger;
 
 public class MainGui {
+
+    private static final Logger LOGGER = Logger.getLogger(MainGui.class.getName());
 
 	public static final String FONT_NAME = "Lucida Grande", APP_NAME = "LifeGame";
 	public static final Font MENU_FONT = new Font(FONT_NAME, Font.BOLD, 12);
@@ -99,7 +102,7 @@ public class MainGui {
 					UIManager.setLookAndFeel(info.getClassName());
 				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
 						UnsupportedLookAndFeelException e) {
-                    System.out.println(e.getMessage());
+                    LOGGER.severe(e.getMessage());
 				}
 				break;
 			}
