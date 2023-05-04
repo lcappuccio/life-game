@@ -68,7 +68,7 @@ public class FileMenu extends JMenu {
                             throw new IOException("Error deleting file");
                         }
                     } catch (IOException exception) {
-                        exception.printStackTrace();
+                        LOGGER.log(Level.SEVERE, exception.getMessage());
                     }
                 } else {
                     return;
