@@ -14,6 +14,7 @@ public class Board {
 
 	public static final String ALIVE_CELL = "o", DEAD_CELL = ".";
 	private final int rows, cols;
+    private final Random random = new Random();
 	private boolean[][] board, boardIteration;
 	private int liveCellCounter = 0;
 
@@ -69,7 +70,6 @@ public class Board {
 	}
 
 	private void generateBoard(int rows, int cols) {
-        Random random = new Random();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				board[i][j] = random.nextInt(101) > (100 - PreferencesGui.getCellLifeProbability());
