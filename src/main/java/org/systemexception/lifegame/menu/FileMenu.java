@@ -113,7 +113,7 @@ public class FileMenu extends JMenu {
     private void writeToFile(PrintWriter fileWriter) {
         for (int i = 0; i < board.getBoardCols(); i++) {
             for (int j = 0; j < board.getBoardRows(); j++) {
-                if (board.getCellAt(j, i).getCellState()) {
+                if (board.getCellAt(j, i)) {
                     fileWriter.print(Board.ALIVE_CELL);
                 } else {
                     fileWriter.print(Board.DEAD_CELL);
