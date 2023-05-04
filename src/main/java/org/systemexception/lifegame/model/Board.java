@@ -69,10 +69,10 @@ public class Board {
 	}
 
 	private void generateBoard(int rows, int cols) {
+        Random random = new Random();
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
-                Random rnd = new Random();
-				board[i][j] = rnd.nextInt(101) > (100 - PreferencesGui.getCellLifeProbability());
+				board[i][j] = random.nextInt(101) > (100 - PreferencesGui.getCellLifeProbability());
 				updateLiveCellCounter(board, i, j);
 			}
 		}
