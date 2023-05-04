@@ -99,7 +99,7 @@ public class MainGui {
 					UIManager.setLookAndFeel(info.getClassName());
 				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
 						UnsupportedLookAndFeelException e) {
-					e.printStackTrace(System.out);
+                    System.out.println(e.getMessage());
 				}
 				break;
 			}
