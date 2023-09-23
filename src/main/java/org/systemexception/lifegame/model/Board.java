@@ -15,13 +15,12 @@ public class Board {
 	public static final String ALIVE_CELL = "o", DEAD_CELL = ".";
 	private final int rows, cols;
     private final Random random = new Random();
-	private boolean[][] board, boardIteration, boardStateChange;
+	private boolean[][] board, boardIteration;
 	private int liveCellCounter = 0;
 
 	public Board(int rows, int cols) {
 		board = new boolean[rows][cols];
         boardIteration = new boolean[rows][cols];
-        boardStateChange = new boolean[rows][cols];
 		this.rows = rows;
 		this.cols = cols;
 		generateBoard(rows, cols);
@@ -30,7 +29,6 @@ public class Board {
 	public Board(int rows, int cols, List<List<String>> savedBoard) {
 		board = new boolean[rows][cols];
         boardIteration = new boolean[rows][cols];
-        boardStateChange = new boolean[rows][cols];
         this.rows = rows;
 		this.cols = cols;
 		setBoardFromSavedFile(savedBoard);
@@ -50,10 +48,6 @@ public class Board {
             case SERVIETTES -> iterateBoardServiettes();
         }
 	}
-
-    public boolean[][] getBoardStateChange() {
-        return boardStateChange;
-    }
 
 	private void generateBoard(int rows, int cols) {
 		for (int i = 0; i < rows; i++) {
@@ -90,19 +84,33 @@ public class Board {
     }
 
 	private int countSurroungingLiveCells(int i, int j) {
-        int countSurroundingLiveCells = 0;
-        for (int di = -1; di <= 1; di++) {
-            for (int dj = -1; dj <= 1; dj++) {
-                // Skip the cell itself
-                if (di == 0 && dj == 0) {
-                    continue;
-                }
-                if (getCellAt(i + di, j + dj)) {
-                    countSurroundingLiveCells++;
-                }
-            }
-        }
-        return countSurroundingLiveCells;
+		int countSurroundingLiveCells = 0;
+		// Rotating clockwise
+		if (getCellAt(i, j - 1)) {
+			countSurroundingLiveCells++;
+		}
+		if (getCellAt(i + 1, j - 1)) {
+			countSurroundingLiveCells++;
+		}
+		if (getCellAt(i + 1, j)) {
+			countSurroundingLiveCells++;
+		}
+		if (getCellAt(i + 1, j + 1)) {
+			countSurroundingLiveCells++;
+		}
+		if (getCellAt(i, j + 1)) {
+			countSurroundingLiveCells++;
+		}
+		if (getCellAt(i - 1, j + 1)) {
+			countSurroundingLiveCells++;
+		}
+		if (getCellAt(i - 1, j)) {
+			countSurroundingLiveCells++;
+		}
+		if (getCellAt(i - 1, j - 1)) {
+			countSurroundingLiveCells++;
+		}
+		return countSurroundingLiveCells;
 	}
 
 	/**
@@ -141,10 +149,6 @@ public class Board {
 				if (surroungingLiveCells == 2 && !board[i][j]) {
 					boardIteration[i][j] = true;
 				}
-                if (board[i][j] != boardIteration[i][j]) {
-                    boardStateChange[i][j] = true;
-                }
-                updateBoardStateChange(i, j);
 				updateLiveCellCounter(boardIteration, i, j);
 			}
 		}
@@ -188,8 +192,7 @@ public class Board {
 						&& (!board[i][j])) {
 					boardIteration[i][j] = true;
 				}
-                updateBoardStateChange(i, j);
-                updateLiveCellCounter(boardIteration, i, j);
+				updateLiveCellCounter(boardIteration, i, j);
 			}
 		}
 		this.board = boardIteration;
@@ -213,8 +216,7 @@ public class Board {
 				if ((surroungingLiveCells == 3) && !board[i][j]) {
 					boardIteration[i][j] = true;
 				}
-                updateBoardStateChange(i, j);
-                updateLiveCellCounter(boardIteration, i, j);
+				updateLiveCellCounter(boardIteration, i, j);
 			}
 		}
 		this.board = boardIteration;
@@ -240,8 +242,7 @@ public class Board {
 						surroungingLiveCells == 8) && !board[i][j]) {
 					boardIteration[i][j] = true;
 				}
-                updateBoardStateChange(i, j);
-                updateLiveCellCounter(boardIteration, i, j);
+				updateLiveCellCounter(boardIteration, i, j);
 			}
 		}
 		this.board = boardIteration;
@@ -267,8 +268,7 @@ public class Board {
 						&& !board[i][j]) {
 					boardIteration[i][j] = true;
 				}
-                updateBoardStateChange(i, j);
-                updateLiveCellCounter(boardIteration, i, j);
+				updateLiveCellCounter(boardIteration, i, j);
 			}
 		}
 		this.board = boardIteration;
@@ -291,7 +291,6 @@ public class Board {
                         surroungingLiveCells == aliveUpperEqual) && !board[i][j]) {
                     boardIteration[i][j] = true;
                 }
-                updateBoardStateChange(i, j);
                 updateLiveCellCounter(boardIteration, i, j);
             }
         }
@@ -313,19 +312,10 @@ public class Board {
                 if (surroungingLiveCells == alivelowerEqual && !board[i][j]) {
                     boardIteration[i][j] = true;
                 }
-                updateBoardStateChange(i, j);
                 updateLiveCellCounter(boardIteration, i, j);
             }
         }
         this.board = boardIteration;
-    }
-
-    private void updateBoardStateChange(int i, int j) {
-        if (board[i][j] != boardIteration[i][j]) {
-            boardStateChange[i][j] = true;
-        } else {
-            boardStateChange[i][j] = false;
-        }
     }
 
 	private void updateLiveCellCounter(boolean[][] board, int i, int j) {
