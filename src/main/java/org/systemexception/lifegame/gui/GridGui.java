@@ -12,7 +12,9 @@ import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.Rectangle2D;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class GridGui extends JPanel {
 
@@ -24,7 +26,10 @@ public class GridGui extends JPanel {
 	private Color colorDark = Color.DARK_GRAY;
     private Color colorLight = Color.WHITE;
 
-    private transient Board board;
+    private Board board;
+
+    private boolean[][] previousState;
+    private Set<Point> changedCells = new HashSet<>();
 
 	public GridGui(final int cellSize, int gridRows, int gridCols, String colourTheme) {
 		this.cellSize = cellSize;
@@ -61,6 +66,11 @@ public class GridGui extends JPanel {
                 // not implemented
             }
 		});
+
+        // Initialize previousState array
+        this.previousState = new boolean[gridRows][gridCols];
+        initializePreviousState();
+
 		totalLiveCells = board.getCellAliveCount();
 		setColours(colourTheme);
     }
@@ -71,10 +81,26 @@ public class GridGui extends JPanel {
 		this.gridRows = gridRows;
 		this.gridCols = gridCols;
 		this.board = new Board(gridRows, gridCols, savedBoard);
+
+        // Initialize previousState array
+        this.previousState = new boolean[gridRows][gridCols];
+        initializePreviousState();
+
 		totalLiveCells = board.getCellAliveCount();
 		setColours(colourTheme);
-		this.paint(getGraphics());
+		this.repaint();
 	}
+
+    /**
+     * Initialize previousState to match current board state
+     */
+    private void initializePreviousState() {
+        for (int i = 0; i < gridRows; i++) {
+            for (int j = 0; j < gridCols; j++) {
+                previousState[i][j] = board.getCellAt(i, j);
+            }
+        }
+    }
 
 	/**
 	 * Resets the board
@@ -82,6 +108,12 @@ public class GridGui extends JPanel {
 	public void resetBoard() {
 		this.board = new Board(gridRows, gridCols);
 		totalLiveCells = board.getCellAliveCount();
+
+        // Reset previousState
+        initializePreviousState();
+
+        // Full repaint after reset
+        repaint();
 	}
 
 	public Board getBoard() {
@@ -98,7 +130,30 @@ public class GridGui extends JPanel {
 	public void iterateBoard() {
 		board.iterateBoard();
 		totalLiveCells = board.getCellAliveCount();
-		repaint(0, 0, 0, getWidth(), getHeight());
+
+        // Then track what changed
+        changedCells.clear();
+        for (int i = 0; i < gridRows; i++) {
+            for (int j = 0; j < gridCols; j++) {
+                boolean current = board.getCellAt(i, j);
+                if (previousState[i][j] != current) {
+                    changedCells.add(new Point(i, j));
+                    previousState[i][j] = current;
+                }
+            }
+        }
+
+        // Repaint only changed cells
+        if (changedCells.isEmpty()) {
+            // No changes, no repaint needed
+            return;
+        }
+
+        // Only repaint changed areas
+        for (Point p : changedCells) {
+            repaint(p.x * cellSize, p.y * cellSize, cellSize, cellSize);
+        }
+        changedCells.clear();
 	}
 
 	public int getTotalLiveCells() {
@@ -148,10 +203,8 @@ public class GridGui extends JPanel {
 
 	@Override
 	public void paintComponent(Graphics graphics) {
+        super.paintComponent(graphics);
         Graphics2D graphics2D = (Graphics2D) graphics;
-        graphics2D.setRenderingHint(RenderingHints.KEY_ALPHA_INTERPOLATION, RenderingHints.VALUE_ALPHA_INTERPOLATION_SPEED);
-        graphics2D.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
-        graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
         Rectangle2D rectangle2D = new Rectangle2D.Double();
         for (int i = 0; i < gridRows; i++) {
 			for (int j = 0; j <gridCols; j++) {
