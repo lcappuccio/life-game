@@ -27,7 +27,7 @@ public class GridGui extends JPanel {
 	private Color colorDark = Color.DARK_GRAY;
 	private Color colorLight = Color.WHITE;
 
-	private Board board;
+	private transient Board board;
 
 	private boolean[][] previousState;
 	private final Set<Point> changedCells = new HashSet<>();
