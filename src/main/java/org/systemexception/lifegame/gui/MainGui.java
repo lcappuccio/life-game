@@ -172,15 +172,12 @@ public class MainGui {
 		}
 	}
 
-	private final ActionListener taskPerformer = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent evt) {
-			menuFile.menuSave.setEnabled(false);
-			gridGui.iterateBoard();
-			iterationCounter++;
-			lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
-			lblCountIteration.setText(String.valueOf(iterationCounter));
-		}
+	private final ActionListener taskPerformer = (ActionEvent evt) -> {
+		menuFile.menuSave.setEnabled(false);
+		gridGui.iterateBoard();
+		iterationCounter++;
+		lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
+		lblCountIteration.setText(String.valueOf(iterationCounter));
 	};
 
 	public static void openFile(File selectedFile) throws IOException {
