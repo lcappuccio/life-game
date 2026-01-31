@@ -4,11 +4,11 @@
  */
 package org.systemexception.lifegame.model;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.systemexception.lifegame.enums.Automata;
 import org.systemexception.lifegame.gui.PreferencesGui;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest {
 

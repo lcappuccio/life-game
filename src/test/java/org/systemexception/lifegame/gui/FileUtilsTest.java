@@ -1,7 +1,7 @@
 package org.systemexception.lifegame.gui;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.systemexception.lifegame.pojo.FileUtils;
 
 import java.io.File;
@@ -10,15 +10,15 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Objects;
 
-import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author leona 24/02/2017 21:30
  */
 public class FileUtilsTest {
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		MainGui.getInstance();
 	}
