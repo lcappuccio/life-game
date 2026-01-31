@@ -217,7 +217,7 @@ public class GridGui extends JPanel {
         for (int i = 0; i < gridRows; i++) {
 			for (int j = 0; j <gridCols; j++) {
                 graphics2D.setColor(board.getCellAt(i, j) ? colorLight : colorDark);
-                rectangle2D.setRect(cellSize * i, cellSize * j, cellSize, cellSize);
+                rectangle2D.setRect((double) cellSize * i, (double) cellSize * j, cellSize, cellSize);
                 graphics2D.fill(rectangle2D);
             }
 		}
