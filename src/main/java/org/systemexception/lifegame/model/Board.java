@@ -200,7 +200,7 @@ public class Board {
 
 	/**
 	 * Coral (45678/3): Every alive cell with 4 to 8 alive neighbours survives.
-	 * Every dead cell with exactly 3 neighbours becomes alvie.
+	 * Every dead cell with exactly 3 neighbours becomes alive.
 	 */
 	private void iterateBoardCoral() {
 		liveCellCounter = 0;
