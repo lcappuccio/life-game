@@ -84,12 +84,12 @@ public class MainGui {
 		EventQueue.invokeLater(MainGui::getInstance);
 	}
 
-    public static void getInstance() {
-        if (mainGui == null) {
-            mainGui = new MainGui();
-            mainGui.mainAppWindow.setVisible(true);
-        }
-    }
+	public static void getInstance() {
+		if (mainGui == null) {
+			mainGui = new MainGui();
+			mainGui.mainAppWindow.setVisible(true);
+		}
+	}
 
 	/**
 	 * Create the application.
@@ -100,23 +100,22 @@ public class MainGui {
 			if ("Nimbus".equals(info.getName())) {
 				try {
 					UIManager.setLookAndFeel(info.getClassName());
-				} catch (ClassNotFoundException | InstantiationException | IllegalAccessException |
-						UnsupportedLookAndFeelException e) {
-                    LOGGER.severe(e.getMessage());
+				} catch (Exception e) {
+					LOGGER.severe(e.getMessage());
 				}
 				break;
 			}
-
 		}
-        mainAppWindowHeightExclude = 99;
-        panelAndLabelHeightExclude = 70;
+		mainAppWindowHeightExclude = 99;
+		panelAndLabelHeightExclude = 70;
+
 		// Set menu accelerator enabler key varies on PLATFORM
 		if (PLATFORM.contains("linux") || PLATFORM.contains("windows")) {
 			metaKey = InputEvent.CTRL_DOWN_MASK;
-		}
-		if (PLATFORM.contains("mac")) {
+		} else if (PLATFORM.contains("mac")) {
 			metaKey = InputEvent.META_DOWN_MASK;
 		}
+
 		initialize();
 	}
 
@@ -173,15 +172,12 @@ public class MainGui {
 		}
 	}
 
-	private final ActionListener taskPerformer = new ActionListener() {
-		@Override
-		public void actionPerformed(ActionEvent evt) {
-			menuFile.menuSave.setEnabled(false);
-			gridGui.iterateBoard();
-			iterationCounter++;
-			lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
-			lblCountIteration.setText(String.valueOf(iterationCounter));
-		}
+	private final ActionListener taskPerformer = (ActionEvent evt) -> {
+		menuFile.menuSave.setEnabled(false);
+		gridGui.iterateBoard();
+		iterationCounter++;
+		lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
+		lblCountIteration.setText(String.valueOf(iterationCounter));
 	};
 
 	public static void openFile(File selectedFile) throws IOException {
