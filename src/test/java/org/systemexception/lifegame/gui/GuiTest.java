@@ -1,7 +1,7 @@
 package org.systemexception.lifegame.gui;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.systemexception.lifegame.enums.BoardSizes;
 import org.systemexception.lifegame.enums.GameSpeeds;
 import org.systemexception.lifegame.enums.Themes;
@@ -14,12 +14,8 @@ import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * @author leo
- * @date 27/12/15 13:29
- */
 public class GuiTest {
 
 	private static final LifeGameMenu lifeGameMenu = new LifeGameMenu();
@@ -27,14 +23,14 @@ public class GuiTest {
 	private final PresetsMenu presetsMenu = new PresetsMenu();
 	private final SpeedMenu speedMenu = new SpeedMenu();
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUp() {
 		MainGui.getInstance();
 	}
 
 	@Test
 	public void fileMenuTest() {
-		assertTrue(2 == fileMenu.getItemCount());
+        assertEquals(2, fileMenu.getItemCount());
 		List<String> menuItems = new ArrayList<>();
 		for (int i = 0; i < fileMenu.getItemCount(); i++) {
 			JMenuItem jMenuItem = fileMenu.getItem(i);

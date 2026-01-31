@@ -1,9 +1,9 @@
 package org.systemexception.lifegame.gui;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.systemexception.lifegame.model.Board;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GridGuiTest {
 
