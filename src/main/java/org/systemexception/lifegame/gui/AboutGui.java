@@ -1,39 +1,49 @@
 package org.systemexception.lifegame.gui;
 
-import javax.swing.*;
-import java.awt.*;
+import javafx.application.Platform;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
-public class AboutGui extends JFrame {
+public class AboutGui {
 
-	private static final int WINDOW_WIDTH = 300;
-    private static final int WINDOW_HEIGHT = 100;
-	private static final JLabel LABEL_TITLE = new JLabel("LifeGame - Java Conway's Game of Life");
-    private static final JLabel LABEL_COPYRIGHT = new JLabel("Copyright © 2014 - Leonardo Cappuccio");
-    private static final JLabel	LABEL_LICENSE = new JLabel("Released under GNU GPL v3.0 License");
+	private static final int WINDOW_WIDTH  = 300;
+	private static final int WINDOW_HEIGHT = 100;
 
 	/**
-	 * Create the frame.
+	 * Launch the JavaFX About window from the Swing event thread.
+	 * Call this where you currently do: new AboutGui(); aboutGui.setVisible(true);
+	 *
+	 * @param parentX  MainGui.windowPositionX (used to offset the window)
+	 * @param parentY  MainGui.windowPositionY
 	 */
-	public AboutGui() {
-		setTitle("About " + MainGui.APP_NAME);
-		setResizable(false);
-		setBounds(MainGui.windowPositionX + 50, MainGui.windowPositionY + 50, WINDOW_WIDTH, WINDOW_HEIGHT);
-		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
-		getContentPane().setLayout(null);
+	public static void show(int parentX, int parentY) {
+		Platform.runLater(() -> {
+			Label titleLabel = new Label("LifeGame - Java Conway's Game of Life");
+			titleLabel.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 12px; -fx-font-weight: bold;");
 
-		LABEL_TITLE.setFont(new Font(MainGui.FONT_NAME, Font.BOLD, 12));
-		LABEL_TITLE.setHorizontalAlignment(SwingConstants.CENTER);
-		LABEL_TITLE.setBounds(6, 6, 286, 16);
-		getContentPane().add(LABEL_TITLE);
+			Label copyrightLabel = new Label("Copyright © 2014 - Leonardo Cappuccio");
+			copyrightLabel.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 10px;");
 
-		LABEL_COPYRIGHT.setHorizontalAlignment(SwingConstants.CENTER);
-		LABEL_COPYRIGHT.setFont(new Font(MainGui.FONT_NAME, Font.PLAIN, 10));
-		LABEL_COPYRIGHT.setBounds(6, 25, 286, 16);
-		getContentPane().add(LABEL_COPYRIGHT);
+			Label licenseLabel = new Label("Released under GNU GPL v3.0 License");
+			licenseLabel.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 10px;");
 
-		LABEL_LICENSE.setHorizontalAlignment(SwingConstants.CENTER);
-		LABEL_LICENSE.setFont(new Font(MainGui.FONT_NAME, Font.PLAIN, 10));
-		LABEL_LICENSE.setBounds(6, 46, 286, 16);
-		getContentPane().add(LABEL_LICENSE);
+			VBox layout = new VBox(3, titleLabel, copyrightLabel, licenseLabel);
+			layout.setAlignment(Pos.TOP_CENTER);
+			layout.setStyle("-fx-padding: 6;");
+
+			Scene scene = new Scene(layout, WINDOW_WIDTH, WINDOW_HEIGHT);
+
+			Stage stage = new Stage(StageStyle.UTILITY);
+			stage.setTitle("About LifeGame");
+			stage.setResizable(false);
+			stage.setScene(scene);
+			stage.setX(parentX + 25);
+			stage.setY(parentY + 25);
+			stage.show();
+		});
 	}
 }

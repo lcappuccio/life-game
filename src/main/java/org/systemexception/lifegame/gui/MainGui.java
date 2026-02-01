@@ -17,6 +17,7 @@
  */
 package org.systemexception.lifegame.gui;
 
+import javafx.application.Platform;
 import org.systemexception.lifegame.enums.BoardSizes;
 import org.systemexception.lifegame.enums.GameSpeeds;
 import org.systemexception.lifegame.menu.FileMenu;
@@ -88,6 +89,8 @@ public class MainGui {
 		if (mainGui == null) {
 			mainGui = new MainGui();
 			mainGui.mainAppWindow.setVisible(true);
+			javafx.application.Platform.startup(() -> {});
+			Platform.setImplicitExit(false);
 		}
 	}
 
