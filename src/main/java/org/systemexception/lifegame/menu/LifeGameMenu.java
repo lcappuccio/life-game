@@ -27,9 +27,7 @@ public class LifeGameMenu extends JMenu {
 
     private JMenuItem menuAbout() {
         JMenuItem menuAbout = new JMenuItem(MENU_ITEM_ABOUT);
-        menuAbout.addActionListener(e ->
-                AboutGui.show(MainGui.windowPositionX, MainGui.windowPositionY)
-        );
+        menuAbout.addActionListener(e -> AboutGui.show(MainGui.windowPositionX, MainGui.windowPositionY));
         menuAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, MainGui.metaKey));
         return (menuAbout);
     }
