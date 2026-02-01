@@ -13,43 +13,43 @@ import java.awt.event.KeyEvent;
 
 public class LifeGameMenu extends JMenu {
 
-	public static final String MENU_ITEM_ABOUT = "About";
+    public static final String MENU_ITEM_ABOUT = "About";
     public static final String MENU_ITEM_PREFERENCES = "Preferences";
     public static final String MENU_ITEM_QUIT = "Quit";
 
-	public LifeGameMenu() {
-		this.setFont(MainGui.MENU_FONT);
-		this.setText(MainGui.APP_NAME);
-		this.add(menuAbout());
-		this.add(menuPreferences());
-		this.add(menuQuit());
-	}
+    public LifeGameMenu() {
+        this.setFont(MainGui.MENU_FONT);
+        this.setText(MainGui.APP_NAME);
+        this.add(menuAbout());
+        this.add(menuPreferences());
+        this.add(menuQuit());
+    }
 
-	private JMenuItem menuAbout() {
-		JMenuItem menuAbout = new JMenuItem(MENU_ITEM_ABOUT);
-		menuAbout.addActionListener(e -> {
-			AboutGui.show(MainGui.windowPositionX, MainGui.windowPositionY);
-		});
-		menuAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, MainGui.metaKey));
-		return (menuAbout);
-	}
+    private JMenuItem menuAbout() {
+        JMenuItem menuAbout = new JMenuItem(MENU_ITEM_ABOUT);
+        menuAbout.addActionListener(e ->
+                AboutGui.show(MainGui.windowPositionX, MainGui.windowPositionY)
+        );
+        menuAbout.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, MainGui.metaKey));
+        return (menuAbout);
+    }
 
-	private JMenuItem menuPreferences() {
-		PreferencesGui preferencesGuiWindow = new PreferencesGui();
-		JMenuItem menuPreferences = new JMenuItem(MENU_ITEM_PREFERENCES);
-		menuPreferences.addActionListener(e -> {
-			preferencesGuiWindow.setVisible(true);
-			preferencesGuiWindow.setBounds(MainGui.windowPositionX + 25, MainGui.windowPositionY + 25,
-					preferencesGuiWindow.getWidth(), preferencesGuiWindow.getHeight());
-		});
-		menuPreferences.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, MainGui.metaKey));
-		return (menuPreferences);
-	}
+    private JMenuItem menuPreferences() {
+        PreferencesGui preferencesGuiWindow = new PreferencesGui();
+        JMenuItem menuPreferences = new JMenuItem(MENU_ITEM_PREFERENCES);
+        menuPreferences.addActionListener(e -> {
+            preferencesGuiWindow.setVisible(true);
+            preferencesGuiWindow.setBounds(MainGui.windowPositionX + 25, MainGui.windowPositionY + 25,
+                    preferencesGuiWindow.getWidth(), preferencesGuiWindow.getHeight());
+        });
+        menuPreferences.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, MainGui.metaKey));
+        return (menuPreferences);
+    }
 
-	private JMenuItem menuQuit() {
-		JMenuItem menuQuit = new JMenuItem(MENU_ITEM_QUIT);
-		menuQuit.addActionListener(e -> System.exit(0));
-		menuQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, MainGui.metaKey));
-		return (menuQuit);
-	}
+    private JMenuItem menuQuit() {
+        JMenuItem menuQuit = new JMenuItem(MENU_ITEM_QUIT);
+        menuQuit.addActionListener(e -> System.exit(0));
+        menuQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, MainGui.metaKey));
+        return (menuQuit);
+    }
 }
