@@ -13,6 +13,14 @@ This is a java implementation of Conway's Game of Life with multiple automatas. 
 - `menu/` - Menu components for user interaction
 - `model/Board` - Represents the game board, its state and the various automatas
 
+## Files to ignore
+
+- `.idea/` - IDE configuration files
+- `target/` - Compiled output files
+- `gpl.txt` - License file
+- `LICENSE` - License file
+- `resorces/` - Resource files such as images and icons
+
 ## Standards
 
 ## Common Commands
