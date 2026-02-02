@@ -29,7 +29,7 @@ public class GridGui extends JPanel {
 
 	private transient Board board;
 
-	private boolean[][] previousState;
+	private final boolean[][] previousState;
 	private final Set<Point> changedCells = new HashSet<>();
 
 	public GridGui(final int cellSize, int gridRows, int gridCols, String colourTheme) {

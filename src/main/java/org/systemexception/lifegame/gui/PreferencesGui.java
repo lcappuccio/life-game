@@ -129,11 +129,7 @@ public class PreferencesGui {
 
                 // Reset the grid in MainGui
                 if (MainGui.gridGui != null) {
-                    Platform.runLater(() -> {
-                        javax.swing.SwingUtilities.invokeLater(() -> {
-                            MainGui.btnReset.doClick();
-                        });
-                    });
+                    Platform.runLater(() -> javax.swing.SwingUtilities.invokeLater(() -> MainGui.btnReset.doClick()));
                 }
 
                 stage.close();
