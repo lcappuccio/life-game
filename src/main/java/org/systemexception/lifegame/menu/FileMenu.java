@@ -24,7 +24,7 @@ public class FileMenu extends JMenu {
     public static final String FILE_SAVE = "Save";
 
     private static final String SAVE_FILE_EXTENSION = ".life";
-    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+    private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final String FILE_PROPERTIES_SEPARATOR = "=";
 
     public JMenuItem menuOpen;
@@ -32,7 +32,6 @@ public class FileMenu extends JMenu {
 
     private transient Board board;
     private transient Consumer<File> onFileOpened;
-    private transient Stage fileChooserStage;
 
     public FileMenu() {
         this.setFont(MainGui.MENU_FONT);
@@ -56,52 +55,51 @@ public class FileMenu extends JMenu {
     private JMenuItem menuOpen() {
         menuOpen = new JMenuItem(FILE_OPEN);
         menuOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MainGui.metaKey));
-        menuOpen.addActionListener(e -> {
-            Platform.runLater(() -> {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Open File");
-                fileChooser.getExtensionFilters().add(
-                        new FileChooser.ExtensionFilter("LifeGame Files", "*.life")
-                );
-                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+        menuOpen.addActionListener(e ->
+                Platform.runLater(() -> {
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Open File");
+                    fileChooser.getExtensionFilters().add(
+                            new FileChooser.ExtensionFilter("LifeGame Files", "*.life")
+                    );
+                    fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-                File selectedFile = fileChooser.showOpenDialog(fileChooserStage);
+                    File selectedFile = fileChooser.showOpenDialog(getFileChooserStage());
 
-                if (selectedFile != null && onFileOpened != null) {
-                    // Execute callback on Swing EDT
-                    SwingUtilities.invokeLater(() -> {
-                        try {
-                            onFileOpened.accept(selectedFile);
-                        } catch (Exception ex) {
-                            LOGGER.log(Level.SEVERE, ex.getMessage());
-                        }
-                    });
-                }
-            });
-        });
+                    if (selectedFile != null && onFileOpened != null) {
+                        // Execute callback on Swing EDT
+                        Platform.runLater(() -> {
+                            try {
+                                onFileOpened.accept(selectedFile);
+                            } catch (Exception ex) {
+                                LOGGER.log(Level.SEVERE, ex.getMessage());
+                            }
+                        });
+                    }
+                }));
         return menuOpen;
     }
 
     private JMenuItem menuSave() {
         menuSave = new JMenuItem(FILE_SAVE);
         menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MainGui.metaKey));
-        menuSave.addActionListener(e -> {
-            Platform.runLater(() -> {
-                FileChooser fileChooser = new FileChooser();
-                fileChooser.setTitle("Save File");
-                fileChooser.getExtensionFilters().add(
-                        new FileChooser.ExtensionFilter("LifeGame Files", "*.life")
-                );
-                fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-                fileChooser.setInitialFileName("game" + SAVE_FILE_EXTENSION);
+        menuSave.addActionListener(e ->
+                Platform.runLater(() -> {
+                    FileChooser fileChooser = new FileChooser();
+                    fileChooser.setTitle("Save File");
+                    fileChooser.getExtensionFilters().add(
+                            new FileChooser.ExtensionFilter("LifeGame Files", "*.life")
+                    );
+                    fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+                    fileChooser.setInitialFileName("game" + SAVE_FILE_EXTENSION);
 
-                File file = fileChooser.showSaveDialog(fileChooserStage);
+                    File file = fileChooser.showSaveDialog(getFileChooserStage());
 
-                if (file != null) {
-                    SwingUtilities.invokeLater(() -> handleSaveFile(file));
-                }
-            });
-        });
+                    if (file != null) {
+                        Platform.runLater(() -> handleSaveFile(file));
+                    }
+                })
+        );
         return menuSave;
     }
 
@@ -150,5 +148,13 @@ public class FileMenu extends JMenu {
             }
             fileWriter.print(LINE_SEPARATOR);
         }
+    }
+
+    private Stage getFileChooserStage() {
+        Stage fileChooserStage = new Stage();
+        fileChooserStage.setWidth(0);
+        fileChooserStage.setHeight(0);
+        fileChooserStage.setOpacity(0);
+        return fileChooserStage;
     }
 }
