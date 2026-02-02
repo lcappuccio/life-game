@@ -18,6 +18,10 @@
 package org.systemexception.lifegame.gui;
 
 import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.geometry.Pos;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import org.systemexception.lifegame.enums.BoardSizes;
 import org.systemexception.lifegame.enums.GameSpeeds;
 import org.systemexception.lifegame.menu.FileMenu;
@@ -44,11 +48,18 @@ public class MainGui {
 	public static final Font MENU_FONT = new Font(FONT_NAME, Font.BOLD, 12);
 	public static int metaKey, windowPositionX, windowPositionY;
 	public static GridGui gridGui;
-	public static JButton btnReset;
-    public static JButton btnStop;
-    public static JButton btnStart;
-    public static JButton btnStep;
-	public static JLabel lblCountIteration;
+	public static javafx.scene.control.Button btnReset;
+    public static javafx.scene.control.Button btnStop;
+    public static javafx.scene.control.Button btnStart;
+    public static javafx.scene.control.Button btnStep;
+
+	public static javafx.scene.control.Label lblCountIteration;
+	private static javafx.scene.control.Label lblCountLiveCells;
+	private javafx.scene.control.Label lblLiveCells;
+	private javafx.scene.control.Label lblIteration;
+
+	private static JPanel centerPanel;
+
 	public static Timer gameTimer;
 
 	private static final Font labelFontBold = new Font(FONT_NAME, Font.BOLD, 10), labelFontPlain = new Font
@@ -56,8 +67,6 @@ public class MainGui {
 	private static final int INITIAL_SPEED = GameSpeeds.JACKRABBIT.getGameSpeed();
 	private static final String PLATFORM = System.getProperty("os.name").toLowerCase();
 	private static int iterationCounter;
-	private static JLabel lblCountLiveCells;
-	private static JPanel centerPanel;
 
 	private static final int LABEL_HEIGHT = 29;
     private static final int LABEL_WIDTH = 75;
@@ -68,9 +77,8 @@ public class MainGui {
 
 	private FileMenu menuFile;
 	private JFrame mainAppWindow;
-	private JLabel lblLiveCells;
-    private JLabel lblIteration;
-	private JPanel lowerPanel;
+
+	private JFXPanel lowerPanel;
 
     private static MainGui mainGui;
 
@@ -85,11 +93,12 @@ public class MainGui {
 
 	public static void getInstance() {
 		if (mainGui == null) {
-			mainGui = new MainGui();
-			mainGui.mainAppWindow.setVisible(true);
 			javafx.application.Platform.startup(() -> {});
 			Platform.setImplicitExit(false);
-		}
+
+			mainGui = new MainGui();
+			mainGui.mainAppWindow.setVisible(true);
+}
 	}
 
 	/**
@@ -134,12 +143,6 @@ public class MainGui {
 		setUpMenuBar();
 		setUpCenterPanel();
 		setUpLowerPanel();
-		setUpStartButton();
-		setUpStepButton();
-		setUpStopButton();
-		setUpResetButton();
-		setUpLiveCellsCounter();
-		setUpIterationCounter();
 		setWindowSize();
 	}
 
@@ -148,8 +151,14 @@ public class MainGui {
 		gridGui.iterateBoard();
 		menuFile.setBoard(gridGui.getBoard());
 		iterationCounter++;
-		lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
-		lblCountIteration.setText(String.valueOf(iterationCounter));
+
+		// Wrap in Platform.runLater to update JavaFX labels from Swing EDT
+		int liveCells = gridGui.getTotalLiveCells();
+		int iteration = iterationCounter;
+		Platform.runLater(() -> {
+			lblCountLiveCells.setText(String.valueOf(liveCells));
+			lblCountIteration.setText(String.valueOf(iteration));
+		});
 	}
 
 	private void resetGrid() {
@@ -159,16 +168,26 @@ public class MainGui {
 				centerPanel.getHeight() / PreferencesGui.getCellSize(), PreferencesGui.getColorTheme());
 		gridGui.resetBoard();
 		centerPanel.add(gridGui);
+
+		// Force Swing to update
+		centerPanel.revalidate();
+		centerPanel.repaint();
+
 		iterationCounter = 0;
-		lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
-		lblCountIteration.setText(String.valueOf(iterationCounter));
+
+		// Wrap in Platform.runLater to update JavaFX labels from Swing EDT
+		int liveCells = gridGui.getTotalLiveCells();
+		Platform.runLater(() -> {
+			lblCountLiveCells.setText(String.valueOf(liveCells));
+			lblCountIteration.setText("0");
+		});
 	}
 
 	private void stopGame() {
 		menuFile.menuSave.setEnabled(true);
 		menuFile.setBoard(gridGui.getBoard());
 		if (gameTimer != null && gameTimer.isRunning()) {
-			btnStart.setEnabled(true);
+			btnStart.setDisable(false);
 			gameTimer.stop();
 		}
 	}
@@ -177,16 +196,31 @@ public class MainGui {
 		menuFile.menuSave.setEnabled(false);
 		gridGui.iterateBoard();
 		iterationCounter++;
-		lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
-		lblCountIteration.setText(String.valueOf(iterationCounter));
+
+		// Wrap in Platform.runLater to update JavaFX labels from Swing EDT
+		int liveCells = gridGui.getTotalLiveCells();
+		int iteration = iterationCounter;
+		Platform.runLater(() -> {
+			lblCountLiveCells.setText(String.valueOf(liveCells));
+			lblCountIteration.setText(String.valueOf(iteration));
+		});
 	};
 
 	public static void openFile(File selectedFile) throws IOException {
-		btnStop.doClick();
+		btnStop.fire();
 		centerPanel.remove(gridGui);
 		gridGui = FileUtils.gridGuiFromFile(selectedFile);
 		centerPanel.add(gridGui);
-		lblCountLiveCells.setText(String.valueOf(gridGui.getTotalLiveCells()));
+
+		// Force Swing to update
+		centerPanel.revalidate();
+		centerPanel.repaint();
+
+		// Wrap in Platform.runLater to update JavaFX labels from Swing EDT
+		int liveCells = gridGui.getTotalLiveCells();
+		Platform.runLater(() -> {
+			lblCountLiveCells.setText(String.valueOf(liveCells));
+		});
 		iterationCounter = Integer.parseInt(lblCountIteration.getText());
 	}
 
@@ -215,97 +249,19 @@ public class MainGui {
 	private void setLargeWindowLayout() {
 		mainAppWindow.setBounds(windowPositionX, windowPositionY, 1280, 1024);
 		centerPanel.setBounds(0, 25, mainAppWindow.getWidth(), mainAppWindow.getHeight() - mainAppWindowHeightExclude);
-		lowerPanel.setBounds(0, mainAppWindow.getHeight() - panelAndLabelHeightExclude, PANEL_WIDTH, LABEL_HEIGHT);
-		lblLiveCells.setBounds(986, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH, LABEL_HEIGHT);
-		lblCountLiveCells.setBounds(1073, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH,
-                LABEL_HEIGHT);
-		lblIteration.setBounds(1136, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH, LABEL_HEIGHT);
-		lblCountIteration.setBounds(1223, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH,
-                LABEL_HEIGHT);
+		lowerPanel.setBounds(0, mainAppWindow.getHeight() - panelAndLabelHeightExclude, mainAppWindow.getWidth() - 20, LABEL_HEIGHT);
 	}
 
 	private void setMediumWindowLayout() {
 		mainAppWindow.setBounds(windowPositionX, windowPositionY, 1024, 768);
 		centerPanel.setBounds(0, 25, mainAppWindow.getWidth(), mainAppWindow.getHeight() - mainAppWindowHeightExclude);
-		lowerPanel.setBounds(0, mainAppWindow.getHeight() - panelAndLabelHeightExclude, PANEL_WIDTH, LABEL_HEIGHT);
-		lblLiveCells.setBounds(700, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH, LABEL_HEIGHT);
-		lblCountLiveCells.setBounds(787, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH,
-                LABEL_HEIGHT);
-		lblIteration.setBounds(860, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH, LABEL_HEIGHT);
-		lblCountIteration.setBounds(947, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH,
-                LABEL_HEIGHT);
+		lowerPanel.setBounds(0, mainAppWindow.getHeight() - panelAndLabelHeightExclude, mainAppWindow.getWidth() - 20, LABEL_HEIGHT);
 	}
 
 	private void setSmallWindowLayout() {
 		mainAppWindow.setBounds(windowPositionX, windowPositionY, 800, 600);
 		centerPanel.setBounds(0, 25, mainAppWindow.getWidth(), mainAppWindow.getHeight() - mainAppWindowHeightExclude);
-		lowerPanel.setBounds(0, mainAppWindow.getHeight() - panelAndLabelHeightExclude, PANEL_WIDTH, LABEL_HEIGHT);
-		lblLiveCells.setBounds(506, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH, LABEL_HEIGHT);
-		lblCountLiveCells.setBounds(593, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH,
-                LABEL_HEIGHT);
-		lblIteration.setBounds(656, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH, LABEL_HEIGHT);
-		lblCountIteration.setBounds(743, mainAppWindow.getHeight() - panelAndLabelHeightExclude, LABEL_WIDTH,
-                LABEL_HEIGHT);
-	}
-
-	private void setUpLiveCellsCounter() {
-		lblLiveCells = new JLabel("Live Cells:");
-		mainAppWindow.getContentPane().add(lblLiveCells, BorderLayout.SOUTH);
-		lblLiveCells.setFont(labelFontBold);
-		lblCountLiveCells = new JLabel(String.valueOf(gridGui.getTotalLiveCells()));
-		mainAppWindow.getContentPane().add(lblCountLiveCells, BorderLayout.SOUTH);
-		lblCountLiveCells.setFont(labelFontPlain);
-	}
-
-	private void setUpIterationCounter() {
-		lblIteration = new JLabel("Iteration:");
-		mainAppWindow.getContentPane().add(lblIteration, BorderLayout.SOUTH);
-		lblIteration.setFont(labelFontBold);
-		lblCountIteration = new JLabel("0");
-		mainAppWindow.getContentPane().add(lblCountIteration, BorderLayout.SOUTH);
-		lblCountIteration.setFont(labelFontPlain);
-	}
-
-	private void setUpStartButton() {
-		btnStart = new JButton("Start");
-		btnStart.addActionListener(e -> {
-			btnStart.setEnabled(false);
-			if (gameTimer == null) {
-				gameTimer = new Timer(INITIAL_SPEED, taskPerformer);
-				gameTimer.start();
-			} else {
-				gameTimer.restart();
-			}
-		});
-		lowerPanel.add(btnStart);
-	}
-
-	private void setUpStopButton() {
-		btnStop = new JButton("Stop");
-		btnStop.addActionListener(e -> stopGame());
-		lowerPanel.add(btnStop);
-	}
-
-	private void setUpStepButton() {
-		btnStep = new JButton("Step");
-		btnStep.addActionListener(e -> {
-			if (gameTimer != null && gameTimer.isRunning()) {
-				btnStart.setEnabled(true);
-				gameTimer.stop();
-			}
-			iterateGrid();
-		});
-		lowerPanel.add(btnStep);
-	}
-
-	private void setUpResetButton() {
-		btnReset = new JButton("Reset");
-		btnReset.addActionListener(e -> {
-			setWindowSize();
-			resetGrid();
-			stopGame();
-		});
-		lowerPanel.add(btnReset);
+		lowerPanel.setBounds(0, mainAppWindow.getHeight() - panelAndLabelHeightExclude, mainAppWindow.getWidth() - 20, LABEL_HEIGHT);
 	}
 
 	private void setUpCenterPanel() {
@@ -320,11 +276,115 @@ public class MainGui {
 	}
 
 	private void setUpLowerPanel() {
-		lowerPanel = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) lowerPanel.getLayout();
-		flowLayout.setHgap(0);
-		flowLayout.setVgap(0);
+		// Create JavaFX panel to embed in Swing
+		lowerPanel = new JFXPanel();
+
+		// Set size BEFORE Platform.runLater
+		lowerPanel.setPreferredSize(new Dimension(1280, LABEL_HEIGHT));
+
+		// Build the JavaFX scene on the FX thread
+		Platform.runLater(() -> {
+			// Create buttons
+			javafx.scene.control.Button btnStart = new javafx.scene.control.Button("Start");
+			javafx.scene.control.Button btnStop = new javafx.scene.control.Button("Stop");
+			javafx.scene.control.Button btnStep = new javafx.scene.control.Button("Step");
+			javafx.scene.control.Button btnReset = new javafx.scene.control.Button("Reset");
+
+			// Set button styles
+			String buttonStyle = "-fx-font-size: 12px; -fx-padding: 5px 10px;";
+			btnStart.setStyle(buttonStyle);
+			btnStop.setStyle(buttonStyle);
+			btnStep.setStyle(buttonStyle);
+			btnReset.setStyle(buttonStyle);
+
+			// Create button HBox
+			HBox buttonBox = new HBox(5, btnStart, btnStop, btnStep, btnReset);
+			buttonBox.setAlignment(Pos.CENTER_LEFT);
+			buttonBox.setPadding(new javafx.geometry.Insets(5));
+
+			// Create labels for live cells counter
+			javafx.scene.control.Label lblLiveCells = new javafx.scene.control.Label("Live Cells:");
+			lblLiveCells.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 10px; -fx-font-weight: bold;");
+
+			javafx.scene.control.Label lblCountLiveCellsFx = new javafx.scene.control.Label("0");
+			lblCountLiveCellsFx.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 10px;");
+
+			// Create labels for iteration counter
+			javafx.scene.control.Label lblIteration = new javafx.scene.control.Label("Iteration:");
+			lblIteration.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 10px; -fx-font-weight: bold;");
+
+			javafx.scene.control.Label lblCountIterationFx = new javafx.scene.control.Label("0");
+			lblCountIterationFx.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 10px;");
+
+			// Create spacer to push counters to the right
+			javafx.scene.layout.Region spacer = new javafx.scene.layout.Region();
+			HBox.setHgrow(spacer, Priority.ALWAYS);
+
+			// Create counter HBox
+			HBox counterBox = new HBox(5, lblLiveCells, lblCountLiveCellsFx, lblIteration, lblCountIterationFx);
+			counterBox.setAlignment(Pos.CENTER_RIGHT);
+			counterBox.setPadding(new javafx.geometry.Insets(5));
+
+			// Combine everything in one HBox
+			HBox mainBox = new HBox(buttonBox, spacer, counterBox);
+			mainBox.setAlignment(Pos.CENTER_LEFT);
+
+			// Create scene and attach to JFXPanel
+			javafx.scene.Scene scene = new javafx.scene.Scene(mainBox);
+			lowerPanel.setScene(scene);
+
+			// Store references
+			MainGui.btnStart = btnStart;
+			MainGui.btnStop = btnStop;
+			MainGui.btnStep = btnStep;
+			MainGui.btnReset = btnReset;
+			MainGui.lblCountLiveCells = lblCountLiveCellsFx;
+			MainGui.lblCountIteration = lblCountIterationFx;
+
+			// Set up event handlers
+			setUpButtonEventHandlers(btnStart, btnStop, btnStep, btnReset);
+		});
+
+		// Add JFXPanel to Swing JFrame
 		mainAppWindow.getContentPane().add(lowerPanel, BorderLayout.SOUTH);
+
+		// Add this line to position it with null layout:
+		lowerPanel.setBounds(0, mainAppWindow.getHeight() - LABEL_HEIGHT - 30, mainAppWindow.getWidth(), LABEL_HEIGHT);
+	}
+
+	private void setUpButtonEventHandlers(javafx.scene.control.Button btnStart,
+										  javafx.scene.control.Button btnStop,
+										  javafx.scene.control.Button btnStep,
+										  javafx.scene.control.Button btnReset) {
+		// Start button handler
+		btnStart.setOnAction(e -> {
+			btnStart.setDisable(true);
+			if (gameTimer == null) {
+				gameTimer = new Timer(INITIAL_SPEED, taskPerformer);
+				gameTimer.start();
+			} else {
+				gameTimer.restart();
+			}
+		});
+
+		// Stop button handler
+		btnStop.setOnAction(e -> stopGame());
+
+		// Step button handler
+		btnStep.setOnAction(e -> {
+			if (gameTimer != null && gameTimer.isRunning()) {
+				btnStart.setDisable(false);
+				gameTimer.stop();
+			}
+			iterateGrid();
+		});
+
+		// Reset button handler
+		btnReset.setOnAction(e -> {
+			setWindowSize();
+			resetGrid();
+			stopGame();
+		});
 	}
 
 	private void setUpMenuBar() {

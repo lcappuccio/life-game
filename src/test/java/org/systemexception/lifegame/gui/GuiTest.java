@@ -89,21 +89,21 @@ public class GuiTest {
 
 	@Test
 	public void testStartStop() throws InterruptedException {
-		MainGui.btnStart.doClick();
+		MainGui.btnStart.fire();
 		Thread.sleep(1000);
-		MainGui.btnStop.doClick();
+		MainGui.btnStop.fire();
         assertFalse(MainGui.gameTimer.isRunning());
 	}
 
 	@Test
 	public void testReset() {
-		MainGui.btnReset.doClick();
+		MainGui.btnReset.fire();
         assertFalse(MainGui.gameTimer.isRunning());
 	}
 
 	@Test
 	public void testSingleIteration() {
-		MainGui.btnStep.doClick();
+		MainGui.btnStep.fire();
         assertFalse(MainGui.gameTimer.isRunning());
 	}
 
@@ -117,24 +117,24 @@ public class GuiTest {
 
 	@Test
 	public void testChangeSpeed() throws InterruptedException {
-		MainGui.btnStart.doClick();
+		MainGui.btnStart.fire();
 		Thread.sleep(1000);
 		for (int i = 0; i < speedMenu.getItemCount(); i++) {
 			speedMenu.getItem(i).doClick();
 		}
-		MainGui.btnStop.doClick();
+		MainGui.btnStop.fire();
         assertFalse(MainGui.gameTimer.isRunning());
 	}
 
 	@Test
 	public void testBoardSizes() {
 		PreferencesGui.setBoardSize(BoardSizes.LARGE.toString());
-		MainGui.btnReset.doClick();
+		MainGui.btnReset.fire();
 
 		PreferencesGui.setBoardSize(BoardSizes.MEDIUM.toString());
-		MainGui.btnReset.doClick();
+		MainGui.btnReset.fire();
 
 		PreferencesGui.setBoardSize(BoardSizes.SMALL.toString());
-		MainGui.btnReset.doClick();
+		MainGui.btnReset.fire();
 	}
 }
