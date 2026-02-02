@@ -55,22 +55,16 @@ public class MainGui {
 
 	public static javafx.scene.control.Label lblCountIteration;
 	private static javafx.scene.control.Label lblCountLiveCells;
-	private javafx.scene.control.Label lblLiveCells;
-	private javafx.scene.control.Label lblIteration;
 
 	private static JPanel centerPanel;
 
 	public static Timer gameTimer;
 
-	private static final Font labelFontBold = new Font(FONT_NAME, Font.BOLD, 10), labelFontPlain = new Font
-			(FONT_NAME, Font.PLAIN, 10);
 	private static final int INITIAL_SPEED = GameSpeeds.JACKRABBIT.getGameSpeed();
 	private static final String PLATFORM = System.getProperty("os.name").toLowerCase();
 	private static int iterationCounter;
 
 	private static final int LABEL_HEIGHT = 29;
-    private static final int LABEL_WIDTH = 75;
-    private static final int PANEL_WIDTH = 390;
 
 	private final int mainAppWindowHeightExclude;
     private final int panelAndLabelHeightExclude;
@@ -218,9 +212,7 @@ public class MainGui {
 
 		// Wrap in Platform.runLater to update JavaFX labels from Swing EDT
 		int liveCells = gridGui.getTotalLiveCells();
-		Platform.runLater(() -> {
-			lblCountLiveCells.setText(String.valueOf(liveCells));
-		});
+		Platform.runLater(() -> lblCountLiveCells.setText(String.valueOf(liveCells)));
 		iterationCounter = Integer.parseInt(lblCountIteration.getText());
 	}
 
