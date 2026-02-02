@@ -15,7 +15,7 @@ import org.systemexception.lifegame.enums.Themes;
 
 public class PreferencesGui {
 
-    private static final int WINDOW_WIDTH = 250;
+    private static final int WINDOW_WIDTH = 270;
     private static final int WINDOW_HEIGHT = 240;
     private static final int MIN_CELL_SIZE = 1;
     private static final int MAX_CELL_SIZE = 4;
@@ -47,6 +47,7 @@ public class PreferencesGui {
             Label lblCellSize = new Label("Cell Size");
             Spinner<Integer> spinnerCellSize = new Spinner<>(MIN_CELL_SIZE, MAX_CELL_SIZE, cellSize, 1);
             spinnerCellSize.setEditable(true);
+            spinnerCellSize.setMaxWidth(Double.MAX_VALUE);
 
             Label lblTheme = new Label("Theme");
             ComboBox<String> comboBoxTheme = new ComboBox<>();
@@ -58,6 +59,7 @@ public class PreferencesGui {
                     Themes.RED.toString()
             );
             comboBoxTheme.setValue(colourTheme);
+            comboBoxTheme.setMaxWidth(Double.MAX_VALUE);
 
             Label lblAutomata = new Label("Automata");
             ComboBox<Automata> comboBoxAutomata = new ComboBox<>();
@@ -73,11 +75,13 @@ public class PreferencesGui {
                     Automata.SERVIETTES
             );
             comboBoxAutomata.setValue(lifeAutomata);
+            comboBoxAutomata.setMaxWidth(Double.MAX_VALUE);
 
             Label lblLifeProbability = new Label("Life Probability");
             Spinner<Integer> spinnerLifeProbability = new Spinner<>(MIN_CELL_LIFE_PROBABILITY,
                     MAX_CELL_LIFE_PROBABILITY, cellLifeProbability, 1);
             spinnerLifeProbability.setEditable(true);
+            spinnerLifeProbability.setMaxWidth(Double.MAX_VALUE);
 
             Label lblBoardSize = new Label("Board Size");
             ComboBox<String> comboBoxBoardSize = new ComboBox<>();
@@ -87,6 +91,7 @@ public class PreferencesGui {
                     BoardSizes.LARGE.toString()
             );
             comboBoxBoardSize.setValue(boardSize);
+            comboBoxBoardSize.setMaxWidth(Double.MAX_VALUE);
 
             Button btnApply = new Button("Apply");
             Button btnCancel = new Button("Cancel");
@@ -111,6 +116,7 @@ public class PreferencesGui {
             HBox buttonBox = new HBox(10, btnApply, btnCancel);
             buttonBox.setAlignment(Pos.CENTER);
             buttonBox.setPadding(new Insets(10, 0, 0, 0));
+            buttonBox.setMaxWidth(Double.MAX_VALUE);
             grid.add(buttonBox, 0, 5, 2, 1);
 
             Scene scene = new Scene(grid, WINDOW_WIDTH, WINDOW_HEIGHT);
