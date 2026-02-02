@@ -67,8 +67,8 @@ public class FileMenu extends JMenu {
                     File selectedFile = fileChooser.showOpenDialog(getFileChooserStage());
 
                     if (selectedFile != null && onFileOpened != null) {
-                        // Execute callback on Swing EDT
-                        Platform.runLater(() -> {
+                        // TODO Execute callback on Swing EDT - Remove after complete migration to JavaFX
+                        SwingUtilities.invokeLater(() -> {
                             try {
                                 onFileOpened.accept(selectedFile);
                             } catch (Exception ex) {
@@ -96,7 +96,8 @@ public class FileMenu extends JMenu {
                     File file = fileChooser.showSaveDialog(getFileChooserStage());
 
                     if (file != null) {
-                        Platform.runLater(() -> handleSaveFile(file));
+                        // TODO Execute callback on Swing EDT - Remove after complete migration to JavaFX
+                        SwingUtilities.invokeLater(() -> handleSaveFile(file));
                     }
                 })
         );
