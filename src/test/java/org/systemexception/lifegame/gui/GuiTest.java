@@ -5,10 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.systemexception.lifegame.enums.BoardSizes;
 import org.systemexception.lifegame.enums.GameSpeeds;
 import org.systemexception.lifegame.enums.Themes;
-import org.systemexception.lifegame.menu.FileMenu;
-import org.systemexception.lifegame.menu.LifeGameMenu;
-import org.systemexception.lifegame.menu.PresetsMenu;
-import org.systemexception.lifegame.menu.SpeedMenu;
+import org.systemexception.lifegame.menu.*;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -131,16 +128,13 @@ public class GuiTest {
 
 	@Test
 	public void testBoardSizes() {
-		PreferencesGui.prefsBoardSizeSelector.setSelectedItem(BoardSizes.LARGE.toString());
-		PreferencesGui.setBoardSize();
-		PreferencesGui.prefsApply.doClick();
-		PreferencesGui.prefsBoardSizeSelector.setSelectedItem(BoardSizes.MEDIUM.toString());
-		PreferencesGui.setBoardSize();
-		PreferencesGui.prefsApply.doClick();
-		PreferencesGui.prefsBoardSizeSelector.setSelectedItem(BoardSizes.SMALL.toString());
-		PreferencesGui.setBoardSize();
-		PreferencesGui.prefsApply.doClick();
-		PreferencesGui.prefsCancel.doClick();
-	}
+		PreferencesGui.setBoardSize(BoardSizes.LARGE.toString());
+		MainGui.btnReset.doClick();
 
+		PreferencesGui.setBoardSize(BoardSizes.MEDIUM.toString());
+		MainGui.btnReset.doClick();
+
+		PreferencesGui.setBoardSize(BoardSizes.SMALL.toString());
+		MainGui.btnReset.doClick();
+	}
 }

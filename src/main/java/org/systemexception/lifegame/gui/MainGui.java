@@ -17,6 +17,7 @@
  */
 package org.systemexception.lifegame.gui;
 
+import javafx.application.Platform;
 import org.systemexception.lifegame.enums.BoardSizes;
 import org.systemexception.lifegame.enums.GameSpeeds;
 import org.systemexception.lifegame.menu.FileMenu;
@@ -27,8 +28,6 @@ import org.systemexception.lifegame.pojo.FileUtils;
 
 import javax.swing.*;
 import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.filechooser.FileFilter;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -88,6 +87,8 @@ public class MainGui {
 		if (mainGui == null) {
 			mainGui = new MainGui();
 			mainGui.mainAppWindow.setVisible(true);
+			javafx.application.Platform.startup(() -> {});
+			Platform.setImplicitExit(false);
 		}
 	}
 
@@ -335,31 +336,20 @@ public class MainGui {
 		JMenu menuLifeGame = new LifeGameMenu();
 		JMenu menuGameSpeed = new SpeedMenu();
 		JMenu menuPresets = new PresetsMenu();
+
 		menuFile = new FileMenu();
-		menuFileSetOpenAction();
+		menuFile.setOnFileOpened(file -> {
+			try {
+				openFile(file);
+			} catch (IOException exception) {
+				LOGGER.severe(exception.getMessage());
+			}
+		});
 
 		menuBar.add(menuLifeGame);
 		menuBar.add(menuFile);
 		menuBar.add(menuGameSpeed);
 		menuBar.add(menuPresets);
-	}
-
-	private void menuFileSetOpenAction() {
-		menuFile.menuOpen.addActionListener(e -> {
-			JFileChooser fileChooser = new JFileChooser();
-			FileFilter fileFilter = new FileNameExtensionFilter(APP_NAME, "life");
-			fileChooser.setFileFilter(fileFilter);
-			fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-			int result = fileChooser.showOpenDialog(fileChooser);
-			if (result == JFileChooser.APPROVE_OPTION) {
-				File selectedFile = fileChooser.getSelectedFile();
-				try {
-					openFile(selectedFile);
-				} catch (IOException exception) {
-					LOGGER.severe(exception.getMessage());
-				}
-			}
-		});
 	}
 
 }
