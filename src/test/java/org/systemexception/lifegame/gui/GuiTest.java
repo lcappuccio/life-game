@@ -131,16 +131,13 @@ public class GuiTest {
 
 	@Test
 	public void testBoardSizes() {
-		PreferencesGui.prefsBoardSizeSelector.setSelectedItem(BoardSizes.LARGE.toString());
-		PreferencesGui.setBoardSize();
-		PreferencesGui.prefsApply.doClick();
-		PreferencesGui.prefsBoardSizeSelector.setSelectedItem(BoardSizes.MEDIUM.toString());
-		PreferencesGui.setBoardSize();
-		PreferencesGui.prefsApply.doClick();
-		PreferencesGui.prefsBoardSizeSelector.setSelectedItem(BoardSizes.SMALL.toString());
-		PreferencesGui.setBoardSize();
-		PreferencesGui.prefsApply.doClick();
-		PreferencesGui.prefsCancel.doClick();
-	}
+		PreferencesGui.setBoardSize(BoardSizes.LARGE.toString());
+		MainGui.btnReset.doClick();
 
+		PreferencesGui.setBoardSize(BoardSizes.MEDIUM.toString());
+		MainGui.btnReset.doClick();
+
+		PreferencesGui.setBoardSize(BoardSizes.SMALL.toString());
+		MainGui.btnReset.doClick();
+	}
 }

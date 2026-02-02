@@ -33,13 +33,8 @@ public class LifeGameMenu extends JMenu {
     }
 
     private JMenuItem menuPreferences() {
-        PreferencesGui preferencesGuiWindow = new PreferencesGui();
         JMenuItem menuPreferences = new JMenuItem(MENU_ITEM_PREFERENCES);
-        menuPreferences.addActionListener(e -> {
-            preferencesGuiWindow.setVisible(true);
-            preferencesGuiWindow.setBounds(MainGui.windowPositionX + 25, MainGui.windowPositionY + 25,
-                    preferencesGuiWindow.getWidth(), preferencesGuiWindow.getHeight());
-        });
+        menuPreferences.addActionListener(e -> PreferencesGui.show(MainGui.windowPositionX, MainGui.windowPositionY));
         menuPreferences.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_COMMA, MainGui.metaKey));
         return (menuPreferences);
     }
