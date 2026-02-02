@@ -67,14 +67,11 @@ public class FileMenu extends JMenu {
                     File selectedFile = fileChooser.showOpenDialog(getFileChooserStage());
 
                     if (selectedFile != null && onFileOpened != null) {
-                        // TODO Execute callback on Swing EDT - Remove after complete migration to JavaFX
-                        SwingUtilities.invokeLater(() -> {
-                            try {
-                                onFileOpened.accept(selectedFile);
-                            } catch (Exception ex) {
-                                LOGGER.log(Level.SEVERE, ex.getMessage());
-                            }
-                        });
+                        try {
+                            onFileOpened.accept(selectedFile);
+                        } catch (Exception ex) {
+                            LOGGER.log(Level.SEVERE, ex.getMessage());
+                        }
                     }
                 }));
         return menuOpen;
@@ -96,8 +93,7 @@ public class FileMenu extends JMenu {
                     File file = fileChooser.showSaveDialog(getFileChooserStage());
 
                     if (file != null) {
-                        // TODO Execute callback on Swing EDT - Remove after complete migration to JavaFX
-                        SwingUtilities.invokeLater(() -> handleSaveFile(file));
+                        handleSaveFile(file);
                     }
                 })
         );
