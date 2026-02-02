@@ -121,8 +121,8 @@ public class PreferencesGui {
 
             Scene scene = new Scene(grid, WINDOW_WIDTH, WINDOW_HEIGHT);
             stage.setScene(scene);
-            stage.setX(parentX + 25);
-            stage.setY(parentY + 25);
+            stage.setX(parentX + 25d);
+            stage.setY(parentY + 25d);
 
             // Set action handlers
             btnApply.setOnAction(e -> {

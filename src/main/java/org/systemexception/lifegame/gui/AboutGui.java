@@ -41,8 +41,8 @@ public class AboutGui {
 			stage.setTitle("About LifeGame");
 			stage.setResizable(false);
 			stage.setScene(scene);
-			stage.setX(parentX + 25);
-			stage.setY(parentY + 25);
+			stage.setX(parentX + 25d);
+			stage.setY(parentY + 25d);
 			stage.show();
 		});
 	}
