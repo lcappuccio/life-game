@@ -16,18 +16,18 @@ public class BoardTest {
     private Board sut = new Board(boardSizeX, boardSizeY);
 
     @Test
-    public void testBordExists() {
+    void testBordExists() {
         assertNotNull(sut);
     }
 
     @Test
-    public void boardHasCorrectSize() {
+    void boardHasCorrectSize() {
         assertEquals(sut.getBoardRows(), boardSizeX);
         assertEquals(sut.getBoardCols(), boardSizeY);
     }
 
     @Test
-    public void testConwayVerticalOscillator() {
+    void testConwayVerticalOscillator() {
         sut = new Board(3, 3);
         sut.setCellAt(0, 0, false);
         sut.setCellAt(0, 1, true);
@@ -47,7 +47,7 @@ public class BoardTest {
 
 
     @Test
-    public void testAssimilationIteration() {
+    void testAssimilationIteration() {
         sut = new Board(100, 100);
         int cellsCounterBefore = sut.getCellAliveCount();
         PreferencesGui.setLifeAutomata(Automata.ASSIMILATION);
@@ -57,7 +57,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testDryLifeIteration() {
+    void testDryLifeIteration() {
         sut = new Board(100, 100);
         int cellsCounterBefore = sut.getCellAliveCount();
         PreferencesGui.setLifeAutomata(Automata.DRYLIFE);
@@ -67,7 +67,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testHighLifeIteration() {
+    void testHighLifeIteration() {
         sut = new Board(100, 100);
         int cellsCounterBefore = sut.getCellAliveCount();
         PreferencesGui.setLifeAutomata(Automata.HIGHLIFE);
@@ -77,7 +77,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testLiveFreeOrDieIteration() {
+    void testLiveFreeOrDieIteration() {
         sut = new Board(100, 100);
         int cellsCounterBefore = sut.getCellAliveCount();
         PreferencesGui.setLifeAutomata(Automata.LIVEFREEORDIE);
@@ -87,7 +87,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testCoralIteration() {
+    void testCoralIteration() {
         sut = new Board(100, 100);
         int cellsCounterBefore = sut.getCellAliveCount();
         PreferencesGui.setLifeAutomata(Automata.CORAL);
@@ -97,7 +97,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testMazeIteration() {
+    void testMazeIteration() {
         sut = new Board(100, 100);
         int cellsCounterBefore = sut.getCellAliveCount();
         PreferencesGui.setLifeAutomata(Automata.MAZE);
@@ -107,7 +107,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testMoveIteration() {
+    void testMoveIteration() {
         sut = new Board(100, 100);
         int cellsCounterBefore = sut.getCellAliveCount();
         PreferencesGui.setLifeAutomata(Automata.MOVE);
@@ -117,7 +117,7 @@ public class BoardTest {
     }
 
     @Test
-    public void testServiettesIteration() {
+    void testServiettesIteration() {
         sut = new Board(100, 100);
         int cellsCounterBefore = sut.getCellAliveCount();
         PreferencesGui.setLifeAutomata(Automata.SERVIETTES);

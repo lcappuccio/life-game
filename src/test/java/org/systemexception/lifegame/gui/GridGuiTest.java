@@ -11,24 +11,24 @@ public class GridGuiTest {
 	private final GridGui sut = new GridGui(cellSize, gridRows, gridCols, "B & W");
 
 	@Test
-	public void testGridExists() {
+	void testGridExists() {
 		assertNotNull(sut);
 	}
 
 	@Test
-	public void testGridHasBoard() {
+	void testGridHasBoard() {
 		assertNotNull(sut.getBoard());
 	}
 
 	@Test
-	public void testGridBoardHasAttributes() {
+	void testGridBoardHasAttributes() {
 		Board board = sut.getBoard();
 		assertTrue(board.getBoardCols() > 0);
 		assertTrue(board.getBoardRows() > 0);
 	}
 
 	@Test
-	public void testChangeCellSize() {
+	void testChangeCellSize() {
 		int innerCellSize = sut.getCellSize();
 		GridGui innerSut = new GridGui(5, gridRows, gridCols, "B & W");
 		int cellSizeNew = innerSut.getCellSize();

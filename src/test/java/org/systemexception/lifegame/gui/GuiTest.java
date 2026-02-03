@@ -26,7 +26,7 @@ public class GuiTest {
 	private SpeedMenu speedMenu;
 
 	@BeforeEach
-	public void setUp() throws InterruptedException {
+	void setUp() throws InterruptedException {
 		MainGui.getInstance();
 
 		waitForFxInitialization();
@@ -38,7 +38,7 @@ public class GuiTest {
 	}
 
 	@Test
-	public void fileMenuTest() {
+	void fileMenuTest() {
         assertEquals(2, fileMenu.getItems().size());
 		List<String> menuItems = new ArrayList<>();
 		for (int i = 0; i < fileMenu.getItems().size(); i++) {
@@ -50,7 +50,7 @@ public class GuiTest {
 	}
 
 	@Test
-	public void lifeGameMenuTest() {
+	void lifeGameMenuTest() {
 		assertEquals(3, lifeGameMenu.getItems().size());
 		List<String> menuItems = new ArrayList<>();
 		for (int i = 0; i < lifeGameMenu.getItems().size(); i++) {
@@ -65,7 +65,7 @@ public class GuiTest {
 	}
 
 	@Test
-	public void presetsMenuTest() {
+	void presetsMenuTest() {
 		assertEquals(7, presetsMenu.getItems().size());
 		List<String> menuItems = new ArrayList<>();
 		for (int i = 0; i < presetsMenu.getItems().size(); i++) {
@@ -82,7 +82,7 @@ public class GuiTest {
 	}
 
 	@Test
-	public void speedMenuTest() {
+	void speedMenuTest() {
 		assertEquals(6, (long) speedMenu.getItems().size());
 		List<String> menuItems = new ArrayList<>();
 		for (int i = 0; i < speedMenu.getItems().size(); i++) {
@@ -100,7 +100,7 @@ public class GuiTest {
 	}
 
 	@Test
-	public void testStartStop() throws InterruptedException {
+	void testStartStop() throws InterruptedException {
 		MainGui.btnStart.fire();
 		Thread.sleep(1000);
 		MainGui.btnStop.fire();
@@ -108,19 +108,19 @@ public class GuiTest {
 	}
 
 	@Test
-	public void testReset() {
+	void testReset() {
 		MainGui.btnReset.fire();
         assertFalse(MainGui.gameTimer.isRunning());
 	}
 
 	@Test
-	public void testSingleIteration() {
+	void testSingleIteration() {
 		MainGui.btnStep.fire();
         assertFalse(MainGui.gameTimer.isRunning());
 	}
 
 	@Test
-	public void testChangeTheme() {
+	void testChangeTheme() {
 		Themes[] values = Themes.values();
 		for (Themes value : values) {
 			MainGui.gridGui.setColours(value.toString());
@@ -128,7 +128,7 @@ public class GuiTest {
 	}
 
 	@Test
-	public void testChangeSpeed() throws InterruptedException {
+	void testChangeSpeed() throws InterruptedException {
 		MainGui.btnStart.fire();
 		Thread.sleep(1000);
 		for (int i = 0; i < speedMenu.getItems().size(); i++) {
@@ -139,7 +139,7 @@ public class GuiTest {
 	}
 
 	@Test
-	public void testBoardSizes() {
+	void testBoardSizes() {
 		PreferencesGui.setBoardSize(BoardSizes.LARGE.toString());
 		MainGui.btnReset.fire();
 
