@@ -6,13 +6,13 @@ package org.systemexception.lifegame.enums;
 
 public enum Automata {
 
-	ASSIMILATION,
-	CONWAY,
-	CORAL,
-	DRYLIFE,
-	HIGHLIFE,
-	LIVEFREEORDIE,
-	MAZE,
-	MOVE,
-	SERVIETTES
+    ASSIMILATION,
+    CONWAY,
+    CORAL,
+    DRYLIFE,
+    HIGHLIFE,
+    LIVEFREEORDIE,
+    MAZE,
+    MOVE,
+    SERVIETTES
 }

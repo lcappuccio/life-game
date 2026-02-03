@@ -29,7 +29,8 @@ public class PreferencesGui {
     private static Automata lifeAutomata = Automata.CONWAY;
     private static String boardSize = BoardSizes.MEDIUM.toString();
 
-    private PreferencesGui() {}
+    private PreferencesGui() {
+    }
 
     /**
      * Launch the JavaFX Preferences window from the Swing event thread.
@@ -173,8 +174,8 @@ public class PreferencesGui {
         return boardSize;
     }
 
-	// Expose setters for testing purposes
-	static void setBoardSize(String size) {
-		boardSize = size;
-	}
+    // Expose setters for testing purposes
+    static void setBoardSize(String size) {
+        boardSize = size;
+    }
 }

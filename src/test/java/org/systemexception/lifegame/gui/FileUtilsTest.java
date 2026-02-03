@@ -18,21 +18,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 class FileUtilsTest {
 
-	@BeforeAll
-	static void setUp() {
-		MainGui.getInstance();
-	}
+    @BeforeAll
+    static void setUp() {
+        MainGui.getInstance();
+    }
 
-	@Test
-	void should_read_preset_file() throws URISyntaxException, IOException {
-		ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
-		URI testFileUri = Objects.requireNonNull(systemClassLoader.getResource("presets/acorn.life")).toURI();
-		File testFile = new File(testFileUri);
-		GridGui gridGui = FileUtils.gridGuiFromFile(testFile);
+    @Test
+    void should_read_preset_file() throws URISyntaxException, IOException {
+        ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
+        URI testFileUri = Objects.requireNonNull(systemClassLoader.getResource("presets/acorn.life")).toURI();
+        File testFile = new File(testFileUri);
+        GridGui gridGui = FileUtils.gridGuiFromFile(testFile);
 
-		assertNotNull(gridGui);
-		assertEquals(512, gridGui.getBoard().getBoardRows());
-		assertEquals(344, gridGui.getBoard().getBoardCols());
-		assertEquals(7, gridGui.getBoard().getCellAliveCount());
-	}
+        assertNotNull(gridGui);
+        assertEquals(512, gridGui.getBoard().getBoardRows());
+        assertEquals(344, gridGui.getBoard().getBoardCols());
+        assertEquals(7, gridGui.getBoard().getCellAliveCount());
+    }
 }
