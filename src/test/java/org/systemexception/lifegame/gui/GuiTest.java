@@ -1,36 +1,48 @@
 package org.systemexception.lifegame.gui;
 
-import org.junit.jupiter.api.BeforeAll;
+import javafx.application.Platform;
+import javafx.scene.control.MenuItem;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.systemexception.lifegame.enums.BoardSizes;
 import org.systemexception.lifegame.enums.GameSpeeds;
 import org.systemexception.lifegame.enums.Themes;
-import org.systemexception.lifegame.menu.*;
+import org.systemexception.lifegame.menu.FileMenu;
+import org.systemexception.lifegame.menu.LifeGameMenu;
+import org.systemexception.lifegame.menu.PresetsMenu;
+import org.systemexception.lifegame.menu.SpeedMenu;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class GuiTest {
 
-	private static final LifeGameMenu lifeGameMenu = new LifeGameMenu();
-	private final FileMenu fileMenu = new FileMenu();
-	private final PresetsMenu presetsMenu = new PresetsMenu();
-	private final SpeedMenu speedMenu = new SpeedMenu();
+	private LifeGameMenu lifeGameMenu;
+	private FileMenu fileMenu;
+	private PresetsMenu presetsMenu;
+	private SpeedMenu speedMenu;
 
-	@BeforeAll
-	public static void setUp() {
+	@BeforeEach
+	public void setUp() throws InterruptedException {
 		MainGui.getInstance();
+
+		waitForFxInitialization();
+
+		lifeGameMenu = new LifeGameMenu();
+		fileMenu = new FileMenu();
+		presetsMenu = new PresetsMenu();
+		speedMenu = new SpeedMenu();
 	}
 
 	@Test
 	public void fileMenuTest() {
-        assertEquals(2, fileMenu.getItemCount());
+        assertEquals(2, fileMenu.getItems().size());
 		List<String> menuItems = new ArrayList<>();
-		for (int i = 0; i < fileMenu.getItemCount(); i++) {
-			JMenuItem jMenuItem = fileMenu.getItem(i);
+		for (int i = 0; i < fileMenu.getItems().size(); i++) {
+			MenuItem jMenuItem = fileMenu.getItems().get(i);
 			menuItems.add(jMenuItem.getText());
 		}
 		assertTrue(menuItems.contains(FileMenu.FILE_OPEN));
@@ -39,12 +51,12 @@ public class GuiTest {
 
 	@Test
 	public void lifeGameMenuTest() {
-		assertEquals(3, lifeGameMenu.getItemCount());
+		assertEquals(3, lifeGameMenu.getItems().size());
 		List<String> menuItems = new ArrayList<>();
-		for (int i = 0; i < lifeGameMenu.getItemCount(); i++) {
-			menuItems.add(lifeGameMenu.getItem(i).getText());
-			if (!LifeGameMenu.MENU_ITEM_QUIT.equals(lifeGameMenu.getItem(i).getText())) {
-				lifeGameMenu.getItem(i).doClick();
+		for (int i = 0; i < lifeGameMenu.getItems().size(); i++) {
+			menuItems.add(lifeGameMenu.getItems().get(i).getText());
+			if (!LifeGameMenu.MENU_ITEM_QUIT.equals(lifeGameMenu.getItems().get(i).getText())) {
+				lifeGameMenu.getItems().get(i).fire();
 			}
 		}
 		assertTrue(menuItems.contains(LifeGameMenu.MENU_ITEM_ABOUT));
@@ -54,11 +66,11 @@ public class GuiTest {
 
 	@Test
 	public void presetsMenuTest() {
-		assertEquals(7, presetsMenu.getItemCount());
+		assertEquals(7, presetsMenu.getItems().size());
 		List<String> menuItems = new ArrayList<>();
-		for (int i = 0; i < presetsMenu.getItemCount(); i++) {
-			menuItems.add(presetsMenu.getItem(i).getText());
-			presetsMenu.getItem(i).doClick();
+		for (int i = 0; i < presetsMenu.getItems().size(); i++) {
+			menuItems.add(presetsMenu.getItems().get(i).getText());
+			presetsMenu.getItems().get(i).fire();
 		}
 		assertTrue(menuItems.contains(PresetsMenu.PRESET_7468M));
 		assertTrue(menuItems.contains(PresetsMenu.PRESET_ACORN));
@@ -71,11 +83,11 @@ public class GuiTest {
 
 	@Test
 	public void speedMenuTest() {
-		assertEquals(6, speedMenu.getItemCount());
+		assertEquals(6, (long) speedMenu.getItems().size());
 		List<String> menuItems = new ArrayList<>();
-		for (int i = 0; i < speedMenu.getItemCount(); i++) {
-			speedMenu.getItem(i).doClick();
-			JMenuItem jMenuItem = speedMenu.getItem(i);
+		for (int i = 0; i < speedMenu.getItems().size(); i++) {
+			speedMenu.getItems().forEach(MenuItem::fire);
+			MenuItem jMenuItem = speedMenu.getItems().get(i);
 			String speedText = jMenuItem.getText();
 			menuItems.add(speedText);
 		}
@@ -119,8 +131,8 @@ public class GuiTest {
 	public void testChangeSpeed() throws InterruptedException {
 		MainGui.btnStart.fire();
 		Thread.sleep(1000);
-		for (int i = 0; i < speedMenu.getItemCount(); i++) {
-			speedMenu.getItem(i).doClick();
+		for (int i = 0; i < speedMenu.getItems().size(); i++) {
+			speedMenu.getItems().get(i).fire();
 		}
 		MainGui.btnStop.fire();
         assertFalse(MainGui.gameTimer.isRunning());
@@ -136,5 +148,11 @@ public class GuiTest {
 
 		PreferencesGui.setBoardSize(BoardSizes.SMALL.toString());
 		MainGui.btnReset.fire();
+	}
+
+	private void waitForFxInitialization() throws InterruptedException {
+		CountDownLatch latch = new CountDownLatch(1);
+		Platform.runLater(latch::countDown);
+		latch.await(5, java.util.concurrent.TimeUnit.SECONDS);
 	}
 }

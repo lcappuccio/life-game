@@ -1,6 +1,10 @@
 package org.systemexception.lifegame.menu;
 
 import javafx.application.Platform;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuItem;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import org.systemexception.lifegame.enums.SavedBoardProperties;
@@ -8,15 +12,13 @@ import org.systemexception.lifegame.gui.MainGui;
 import org.systemexception.lifegame.gui.PreferencesGui;
 import org.systemexception.lifegame.model.Board;
 
-import javax.swing.*;
-import java.awt.event.KeyEvent;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FileMenu extends JMenu {
+public class FileMenu extends Menu {
 
     private static final Logger LOGGER = Logger.getLogger(FileMenu.class.getName());
     public static final String FILE_PROPERTIES_LINE = "#";
@@ -27,17 +29,16 @@ public class FileMenu extends JMenu {
     private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final String FILE_PROPERTIES_SEPARATOR = "=";
 
-    public JMenuItem menuOpen;
-    public JMenuItem menuSave;
+    public MenuItem menuOpen;
+    public MenuItem menuSave;
 
     private transient Board board;
     private transient Consumer<File> onFileOpened;
 
     public FileMenu() {
-        this.setFont(MainGui.MENU_FONT);
+        //this.setFont(MainGui.MENU_FONT);
         this.setText("File");
-        this.add(menuOpen());
-        this.add(menuSave());
+        this.getItems().addAll(menuOpen(), menuSave());
     }
 
     public void setBoard(Board board) {
@@ -52,10 +53,10 @@ public class FileMenu extends JMenu {
         this.onFileOpened = onFileOpened;
     }
 
-    private JMenuItem menuOpen() {
-        menuOpen = new JMenuItem(FILE_OPEN);
-        menuOpen.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, MainGui.metaKey));
-        menuOpen.addActionListener(e ->
+    private MenuItem menuOpen() {
+        menuOpen = new MenuItem(FILE_OPEN);
+        menuOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, MainGui.metaKey));
+        menuOpen.setOnAction(e ->
                 Platform.runLater(() -> {
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle("Open File");
@@ -77,10 +78,10 @@ public class FileMenu extends JMenu {
         return menuOpen;
     }
 
-    private JMenuItem menuSave() {
-        menuSave = new JMenuItem(FILE_SAVE);
-        menuSave.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, MainGui.metaKey));
-        menuSave.addActionListener(e ->
+    private MenuItem menuSave() {
+        menuSave = new MenuItem(FILE_SAVE);
+        menuSave.setAccelerator(new KeyCodeCombination(KeyCode.S, MainGui.metaKey));
+        menuSave.setOnAction(e ->
                 Platform.runLater(() -> {
                     FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle("Save File");
