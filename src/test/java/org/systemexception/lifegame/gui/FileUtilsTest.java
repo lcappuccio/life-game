@@ -16,15 +16,15 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * @author leona 24/02/2017 21:30
  */
-public class FileUtilsTest {
+class FileUtilsTest {
 
 	@BeforeAll
-	public static void setUp() {
+	static void setUp() {
 		MainGui.getInstance();
 	}
 
 	@Test
-	public void should_read_preset_file() throws URISyntaxException, IOException {
+	void should_read_preset_file() throws URISyntaxException, IOException {
 		ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
 		URI testFileUri = Objects.requireNonNull(systemClassLoader.getResource("presets/acorn.life")).toURI();
 		File testFile = new File(testFileUri);

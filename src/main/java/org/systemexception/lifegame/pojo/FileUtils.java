@@ -1,5 +1,6 @@
 package org.systemexception.lifegame.pojo;
 
+import javafx.application.Platform;
 import org.systemexception.lifegame.enums.Automata;
 import org.systemexception.lifegame.enums.SavedBoardProperties;
 import org.systemexception.lifegame.gui.GridGui;
@@ -14,16 +15,17 @@ import java.util.Properties;
 
 public class FileUtils {
 
-	private static final String EMPTY_STRING = "";
+    private static final String EMPTY_STRING = "";
 
-    private FileUtils() {}
+    private FileUtils() {
+    }
 
-	public static GridGui gridGuiFromFile(final File file) throws IOException {
+    public static GridGui gridGuiFromFile(final File file) throws IOException {
 
-		List<List<String>> gridGuiAsArrayList = new ArrayList<>();
-		String line;
-		Properties properties = new Properties();
-        try(BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
+        List<List<String>> gridGuiAsArrayList = new ArrayList<>();
+        String line;
+        Properties properties = new Properties();
+        try (BufferedReader fileReader = new BufferedReader(new FileReader(file))) {
             while ((line = fileReader.readLine()) != null) {
                 if (!line.startsWith(FileMenu.FILE_PROPERTIES_LINE)) {
                     gridGuiAsArrayList.add(getBoardLineFrom(line));
@@ -33,26 +35,26 @@ public class FileUtils {
             }
         }
 
-		int cellSize = Integer.parseInt(properties.getProperty(SavedBoardProperties.CELLSIZE.toString()));
-		int gridCols = Integer.parseInt(properties.getProperty(SavedBoardProperties.COLS.toString()));
-		int gridRows = Integer.parseInt(properties.getProperty(SavedBoardProperties.ROWS.toString()));
+        int cellSize = Integer.parseInt(properties.getProperty(SavedBoardProperties.CELLSIZE.toString()));
+        int gridCols = Integer.parseInt(properties.getProperty(SavedBoardProperties.COLS.toString()));
+        int gridRows = Integer.parseInt(properties.getProperty(SavedBoardProperties.ROWS.toString()));
 
-		String automata = properties.getProperty(SavedBoardProperties.AUTOMATA.toString());
-		PreferencesGui.setLifeAutomata(Automata.valueOf(automata));
+        String automata = properties.getProperty(SavedBoardProperties.AUTOMATA.toString());
+        PreferencesGui.setLifeAutomata(Automata.valueOf(automata));
 
-		String iterationCounter = properties.getProperty(SavedBoardProperties.ITERATION_COUNTER.toString());
-		MainGui.lblCountIteration.setText(iterationCounter);
+        String iterationCounter = properties.getProperty(SavedBoardProperties.ITERATION_COUNTER.toString());
+        Platform.runLater(() -> MainGui.lblCountIteration.setText(iterationCounter));
 
-		String theme = properties.getProperty(SavedBoardProperties.THEME.toString());
+        String theme = properties.getProperty(SavedBoardProperties.THEME.toString());
 
-		return new GridGui(cellSize, gridRows, gridCols, gridGuiAsArrayList, theme);
-	}
+        return new GridGui(cellSize, gridRows, gridCols, gridGuiAsArrayList, theme);
+    }
 
-	private static ArrayList<String> getBoardLineFrom(String line) {
-		ArrayList<String> fileLine = new ArrayList<>();
-		for (int i = 0; i < line.length(); i++) {
-			fileLine.add(String.valueOf(line.charAt(i)));
-		}
-		return fileLine;
-	}
+    private static ArrayList<String> getBoardLineFrom(String line) {
+        ArrayList<String> fileLine = new ArrayList<>();
+        for (int i = 0; i < line.length(); i++) {
+            fileLine.add(String.valueOf(line.charAt(i)));
+        }
+        return fileLine;
+    }
 }

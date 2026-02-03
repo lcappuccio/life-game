@@ -13,6 +13,8 @@ public class AboutGui {
 	private static final int WINDOW_WIDTH  = 300;
 	private static final int WINDOW_HEIGHT = 100;
 
+	private AboutGui() {}
+
 	/**
 	 * Launch the JavaFX About window from the Swing event thread.
 	 * Call this where you currently do: new AboutGui(); aboutGui.setVisible(true);
@@ -23,13 +25,13 @@ public class AboutGui {
 	public static void show(int parentX, int parentY) {
 		Platform.runLater(() -> {
 			Label titleLabel = new Label("LifeGame - Java Conway's Game of Life");
-			titleLabel.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 12px; -fx-font-weight: bold;");
+			titleLabel.setStyle(MainGui.FONT_BOLD);
 
 			Label copyrightLabel = new Label("Copyright © 2014 - Leonardo Cappuccio");
-			copyrightLabel.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 10px;");
+			copyrightLabel.setStyle(MainGui.FONT_NORMAL);
 
 			Label licenseLabel = new Label("Released under GNU GPL v3.0 License");
-			licenseLabel.setStyle("-fx-font-family: 'Lucida Grande'; -fx-font-size: 10px;");
+			licenseLabel.setStyle(MainGui.FONT_NORMAL);
 
 			VBox layout = new VBox(3, titleLabel, copyrightLabel, licenseLabel);
 			layout.setAlignment(Pos.TOP_CENTER);
