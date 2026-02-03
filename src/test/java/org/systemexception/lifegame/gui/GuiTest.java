@@ -15,7 +15,9 @@ import org.systemexception.lifegame.menu.SpeedMenu;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
 
+import static org.awaitility.Awaitility.await;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GuiTest {
@@ -100,9 +102,9 @@ class GuiTest {
     }
 
     @Test
-    void testStartStop() throws InterruptedException {
+    void testStartStop() {
         MainGui.btnStart.fire();
-        Thread.sleep(1000);
+        await().atLeast(2L, TimeUnit.SECONDS).await();
         MainGui.btnStop.fire();
         assertFalse(MainGui.gameTimer.isRunning());
     }
@@ -121,17 +123,19 @@ class GuiTest {
 
     @Test
     void testChangeTheme() {
+        int iterationCounter = 0;
         Themes[] values = Themes.values();
         for (Themes value : values) {
             MainGui.gridGui.setColours(value.toString());
+            iterationCounter++;
         }
-        assertTrue(true);
+        assertEquals(iterationCounter, values.length);
     }
 
     @Test
-    void testChangeSpeed() throws InterruptedException {
+    void testChangeSpeed() {
         MainGui.btnStart.fire();
-        Thread.sleep(1000);
+        await().atLeast(2L, TimeUnit.SECONDS).await();
         for (int i = 0; i < speedMenu.getItems().size(); i++) {
             speedMenu.getItems().get(i).fire();
         }
@@ -141,16 +145,21 @@ class GuiTest {
 
     @Test
     void testBoardSizes() {
+        int iterationCounter = 0;
+
         PreferencesGui.setBoardSize(BoardSizes.LARGE.toString());
         MainGui.btnReset.fire();
+        iterationCounter++;
 
         PreferencesGui.setBoardSize(BoardSizes.MEDIUM.toString());
         MainGui.btnReset.fire();
+        iterationCounter++;
 
         PreferencesGui.setBoardSize(BoardSizes.SMALL.toString());
         MainGui.btnReset.fire();
+        iterationCounter++;
 
-        assertTrue(true);
+        assertEquals(3, iterationCounter);
     }
 
     private void waitForFxInitialization() throws InterruptedException {
