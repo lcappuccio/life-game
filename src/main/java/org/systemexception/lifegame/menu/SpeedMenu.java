@@ -45,13 +45,13 @@ public class SpeedMenu extends Menu {
         // Index 0 -> KeyCode.DIGIT5
         // Index 1 -> KeyCode.DIGIT4
         // Index 2 -> KeyCode.DIGIT3, etc.
-        switch (5 - index) {
-            case 5: return KeyCode.DIGIT5;
-            case 4: return KeyCode.DIGIT4;
-            case 3: return KeyCode.DIGIT3;
-            case 2: return KeyCode.DIGIT2;
-            case 1: return KeyCode.DIGIT1;
-            default: return KeyCode.DIGIT0;
-        }
+        return switch (5 - index) {
+            case 5 -> KeyCode.DIGIT5;
+            case 4 -> KeyCode.DIGIT4;
+            case 3 -> KeyCode.DIGIT3;
+            case 2 -> KeyCode.DIGIT2;
+            case 1 -> KeyCode.DIGIT1;
+            default -> KeyCode.DIGIT0;
+        };
     }
 }
