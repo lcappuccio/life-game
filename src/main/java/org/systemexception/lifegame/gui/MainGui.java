@@ -139,7 +139,7 @@ public class MainGui {
     }
 
     private void iterateGrid() {
-        menuFile.menuSave.setDisable(false);
+        menuFile.getMenuSave().setDisable(false);
         gridGui.iterateBoard();
         menuFile.setBoard(gridGui.getBoard());
         iterationCounter++;
@@ -154,7 +154,7 @@ public class MainGui {
     }
 
     private void resetGrid() {
-        menuFile.menuSave.setDisable(false);
+        menuFile.getMenuSave().setDisable(false);
         centerPanel.remove(gridGui);
         gridGui = new GridGui(PreferencesGui.getCellSize(), centerPanel.getWidth() / PreferencesGui.getCellSize(),
                 centerPanel.getHeight() / PreferencesGui.getCellSize(), PreferencesGui.getColorTheme());
@@ -176,7 +176,7 @@ public class MainGui {
     }
 
     private void stopGame() {
-        menuFile.menuSave.setDisable(false);
+        menuFile.getMenuSave().setDisable(false);
         menuFile.setBoard(gridGui.getBoard());
         if (gameTimer != null && gameTimer.isRunning()) {
             btnStart.setDisable(false);
@@ -185,7 +185,7 @@ public class MainGui {
     }
 
     private final ActionListener taskPerformer = (ActionEvent evt) -> {
-        menuFile.menuSave.setDisable(true);
+        menuFile.getMenuSave().setDisable(true);
         gridGui.iterateBoard();
         iterationCounter++;
 
@@ -391,15 +391,6 @@ public class MainGui {
             LifeGameMenu menuLifeGame = new LifeGameMenu();
             SpeedMenu menuGameSpeed = new SpeedMenu();
             PresetsMenu menuPresets = new PresetsMenu();
-
-            // Set up file menu callback
-            menuFile.setOnFileOpened(file -> {
-                try {
-                    openFile(file);
-                } catch (IOException exception) {
-                    LOGGER.severe(exception.getMessage());
-                }
-            });
 
             // Add menus to menu bar
             menuBar.getMenus().addAll(menuLifeGame, menuFile, menuGameSpeed, menuPresets);

@@ -14,7 +14,6 @@ import org.systemexception.lifegame.model.Board;
 
 import java.io.*;
 import java.nio.file.Files;
-import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,11 +28,10 @@ public class FileMenu extends Menu {
     private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final String FILE_PROPERTIES_SEPARATOR = "=";
 
-    public MenuItem menuOpen;
-    public MenuItem menuSave;
+    private MenuItem menuOpen;
+    private MenuItem menuSave;
 
-    private transient Board board;
-    private transient Consumer<File> onFileOpened;
+    private Board board;
 
     public FileMenu() {
         this.setText("File");
@@ -44,12 +42,12 @@ public class FileMenu extends Menu {
         this.board = board;
     }
 
-    /**
-     * Set callback for when a file is opened successfully.
-     * Called from Swing EDT after file is loaded.
-     */
-    public void setOnFileOpened(Consumer<File> onFileOpened) {
-        this.onFileOpened = onFileOpened;
+    public MenuItem getMenuOpen() {
+        return menuOpen;
+    }
+
+    public MenuItem getMenuSave() {
+        return menuSave;
     }
 
     private MenuItem menuOpen() {
@@ -57,20 +55,20 @@ public class FileMenu extends Menu {
         menuOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, MainGui.metaKey));
         menuOpen.setOnAction(e ->
                 Platform.runLater(() -> {
-                    FileChooser fileChooser = new FileChooser();
+                    javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
                     fileChooser.setTitle("Open File");
                     fileChooser.getExtensionFilters().add(
-                            new FileChooser.ExtensionFilter("LifeGame Files", "*.life")
+                            new javafx.stage.FileChooser.ExtensionFilter("LifeGame Files", "*.life")
                     );
-                    fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+                    fileChooser.setInitialDirectory(new java.io.File(System.getProperty("user.home")));
 
-                    File selectedFile = fileChooser.showOpenDialog(getFileChooserStage());
+                    java.io.File selectedFile = fileChooser.showOpenDialog(getFileChooserStage());
 
-                    if (selectedFile != null && onFileOpened != null) {
+                    if (selectedFile != null) {
                         try {
-                            onFileOpened.accept(selectedFile);
-                        } catch (Exception ex) {
-                            LOGGER.log(Level.SEVERE, ex.getMessage());
+                            MainGui.openFile(selectedFile);
+                        } catch (IOException exception) {
+                            LOGGER.severe(exception.getMessage());
                         }
                     }
                 }));
@@ -147,7 +145,8 @@ public class FileMenu extends Menu {
         }
     }
 
-    private Stage getFileChooserStage() {
+    // Expose a Stage suitable for use by FileChooser dialogs. Made public so callers (e.g. MainGui) can use it from the FX thread.
+    public Stage getFileChooserStage() {
         Stage fileChooserStage = new Stage();
         fileChooserStage.setWidth(0);
         fileChooserStage.setHeight(0);
