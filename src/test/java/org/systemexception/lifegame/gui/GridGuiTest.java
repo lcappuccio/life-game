@@ -5,7 +5,7 @@ import org.systemexception.lifegame.model.Board;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GridGuiTest {
+class GridGuiTest {
 
 	private final int cellSize = 10, gridRows = 10, gridCols = 5;
 	private final GridGui sut = new GridGui(cellSize, gridRows, gridCols, "B & W");

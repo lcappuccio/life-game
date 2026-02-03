@@ -29,6 +29,8 @@ public class PreferencesGui {
     private static Automata lifeAutomata = Automata.CONWAY;
     private static String boardSize = BoardSizes.MEDIUM.toString();
 
+    private PreferencesGui() {}
+
     /**
      * Launch the JavaFX Preferences window from the Swing event thread.
      * Call this where you currently do: new PreferencesGui(); preferencesGui.setVisible(true);

@@ -18,7 +18,7 @@ import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class GuiTest {
+class GuiTest {
 
 	private LifeGameMenu lifeGameMenu;
 	private FileMenu fileMenu;

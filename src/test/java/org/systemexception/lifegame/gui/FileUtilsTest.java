@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 /**
  * @author leona 24/02/2017 21:30
  */
-public class FileUtilsTest {
+class FileUtilsTest {
 
 	@BeforeAll
 	static void setUp() {

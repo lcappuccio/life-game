@@ -10,7 +10,7 @@ import org.systemexception.lifegame.gui.PreferencesGui;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class BoardTest {
+class BoardTest {
 
     private final int boardSizeX = 5, boardSizeY = 5;
     private Board sut = new Board(boardSizeX, boardSizeY);

@@ -13,6 +13,8 @@ public class AboutGui {
 	private static final int WINDOW_WIDTH  = 300;
 	private static final int WINDOW_HEIGHT = 100;
 
+	private AboutGui() {}
+
 	/**
 	 * Launch the JavaFX About window from the Swing event thread.
 	 * Call this where you currently do: new AboutGui(); aboutGui.setVisible(true);

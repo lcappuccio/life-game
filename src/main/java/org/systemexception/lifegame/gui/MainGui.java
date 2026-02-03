@@ -278,10 +278,10 @@ public class MainGui {
         // Build the JavaFX scene on the FX thread
         Platform.runLater(() -> {
             // Create buttons
-            javafx.scene.control.Button btnStart = new javafx.scene.control.Button("Start");
-            javafx.scene.control.Button btnStop = new javafx.scene.control.Button("Stop");
-            javafx.scene.control.Button btnStep = new javafx.scene.control.Button("Step");
-            javafx.scene.control.Button btnReset = new javafx.scene.control.Button("Reset");
+            btnStart = new javafx.scene.control.Button("Start");
+            btnStop = new javafx.scene.control.Button("Stop");
+            btnStep = new javafx.scene.control.Button("Step");
+            btnReset = new javafx.scene.control.Button("Reset");
 
             // Set button styles
             String buttonStyle = "-fx-font-size: 12px; -fx-padding: 5px 10px;";
@@ -327,10 +327,6 @@ public class MainGui {
             lowerPanel.setScene(scene);
 
             // Store references
-            MainGui.btnStart = btnStart;
-            MainGui.btnStop = btnStop;
-            MainGui.btnStep = btnStep;
-            MainGui.btnReset = btnReset;
             MainGui.lblCountLiveCells = lblCountLiveCellsFx;
             MainGui.lblCountIteration = lblCountIterationFx;
 
