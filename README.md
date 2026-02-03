@@ -28,11 +28,12 @@ Download the code/jar and build/execute with your favourite IDE/CLI.
 
 ### Preferences
 
-- Cell Size: sets the cell size, smaller values generate more cells per grid, viceversa larger values will generate less cells per grid
+- Cell Size: sets the cell size, smaller values generate more cells per grid, viceversa larger values will generate less
+  cells per grid
 - Theme: sets the colour theme for the grid
 - Automata: selects a different automata, see [LifeWiki](http://www.conwaylife.com/wiki/Cellular_automaton)
 - Life Probability: sets the probability of generating a live cell in a new board, combine different settings with the
-automata setting
+  automata setting
 - Board Size: sets the board size, Small (800x600), Medium (1024x768), Large (1280x1024)
 - Apply: applies the preferences (*caution:* will stop the current simulation and reset the grid)
 
@@ -47,8 +48,8 @@ the Free Software Foundation, either version 3 of the License, or
 
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
 GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
-along with this program.  If not, see http://www.gnu.org/licenses/
+along with this program. If not, see http://www.gnu.org/licenses/

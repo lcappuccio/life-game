@@ -6,13 +6,13 @@ package org.systemexception.lifegame.enums;
 
 public enum Themes {
 
-	BLUE("Blue"),
-	BW("B & W"),
-	GREEN("Green"),
-	INVERSE("Inverse"),
-	RED("Red");
-	
-	private final String theme;
+    BLUE("Blue"),
+    BW("B & W"),
+    GREEN("Green"),
+    INVERSE("Inverse"),
+    RED("Red");
+
+    private final String theme;
 
     Themes(final String theme) {
         this.theme = theme;

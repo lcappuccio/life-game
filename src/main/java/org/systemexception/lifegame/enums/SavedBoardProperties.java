@@ -6,21 +6,21 @@ package org.systemexception.lifegame.enums;
 
 public enum SavedBoardProperties {
 
-	AUTOMATA("automata"),
-	CELLSIZE("cellSize"),
-	COLS("cols"),
-	ITERATION_COUNTER("iteration"),
-	ROWS("rows"),
-	THEME("theme");
+    AUTOMATA("automata"),
+    CELLSIZE("cellSize"),
+    COLS("cols"),
+    ITERATION_COUNTER("iteration"),
+    ROWS("rows"),
+    THEME("theme");
 
-	private final String property;
+    private final String property;
 
-	SavedBoardProperties(String property) {
-		this.property = property;
-	}
+    SavedBoardProperties(String property) {
+        this.property = property;
+    }
 
-	@Override
-	public String toString() {
-		return property;
-	}
+    @Override
+    public String toString() {
+        return property;
+    }
 }
