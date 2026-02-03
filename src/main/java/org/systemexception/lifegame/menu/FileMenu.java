@@ -36,7 +36,6 @@ public class FileMenu extends Menu {
     private transient Consumer<File> onFileOpened;
 
     public FileMenu() {
-        //this.setFont(MainGui.MENU_FONT);
         this.setText("File");
         this.getItems().addAll(menuOpen(), menuSave());
     }
