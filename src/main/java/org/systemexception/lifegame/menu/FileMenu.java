@@ -120,6 +120,8 @@ public class FileMenu extends Menu {
 
         try (PrintWriter fileWriter = new PrintWriter(bufferedWriter)) {
             // Write board properties
+            fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.BOARDSIZE +
+                    FILE_PROPERTIES_SEPARATOR + preferencesGui.getBoardSize() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.COLS +
                     FILE_PROPERTIES_SEPARATOR + board.getBoardCols() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.ROWS +

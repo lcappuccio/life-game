@@ -28,19 +28,6 @@ public class PreferencesGui {
     private Automata lifeAutomata = Automata.CONWAY;
     private String boardSize = BoardSizes.MEDIUM.toString();
 
-    public PreferencesGui() {
-        // Defaults already set above
-    }
-
-    // Optionally allow passing initial values
-    public PreferencesGui(int cellSize, int cellLifeProbability, String colourTheme, Automata lifeAutomata, String boardSize) {
-        this.cellSize = cellSize;
-        this.cellLifeProbability = cellLifeProbability;
-        this.colourTheme = colourTheme;
-        this.lifeAutomata = lifeAutomata;
-        this.boardSize = boardSize;
-    }
-
     /**
      * Launch the JavaFX Preferences window from the Swing event thread.
      * Usage: PreferencesGui preferencesGui = new PreferencesGui(); preferencesGui.show(parentX, parentY);

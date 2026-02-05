@@ -41,6 +41,9 @@ public class FileUtils {
         int gridCols = Integer.parseInt(properties.getProperty(SavedBoardProperties.COLS.toString()));
         int gridRows = Integer.parseInt(properties.getProperty(SavedBoardProperties.ROWS.toString()));
 
+        String boardSize = String.valueOf(properties.getProperty(SavedBoardProperties.BOARDSIZE.toString()));
+        preferencesGui.setBoardSize(boardSize);
+
         String automata = properties.getProperty(SavedBoardProperties.AUTOMATA.toString());
         preferencesGui.setLifeAutomata(Automata.valueOf(automata));
 

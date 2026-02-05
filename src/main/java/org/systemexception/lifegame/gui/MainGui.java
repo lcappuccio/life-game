@@ -204,7 +204,7 @@ public class MainGui {
         gridGui = fileUtils.gridGuiFromFile(selectedFile);
         centerPanel.add(gridGui);
 
-        // Force Swing to update
+        setWindowSize();
         centerPanel.revalidate();
         centerPanel.repaint();
 
