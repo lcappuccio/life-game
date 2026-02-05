@@ -51,8 +51,6 @@ public class MainGui {
     public static int windowPositionX;
     public static int windowPositionY;
 
-    public static GridGui gridGui;
-
     public static javafx.scene.control.Button btnReset;
     public static javafx.scene.control.Button btnStop;
     public static javafx.scene.control.Button btnStart;
@@ -76,10 +74,12 @@ public class MainGui {
 
     private FileMenu menuFile;
     private FileUtils fileUtils;
-    private PreferencesGui preferencesGui;
     private JFXPanel menuBarPanel;
     private JFXPanel lowerPanel;
     private JFrame mainAppWindow;
+
+    private PreferencesGui preferencesGui;
+    public GridGui gridGui;
 
     private static MainGui mainGui;
 
