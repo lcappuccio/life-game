@@ -132,10 +132,7 @@ public class PreferencesGui {
                 cellLifeProbability = spinnerLifeProbability.getValue();
                 boardSize = comboBoxBoardSize.getValue();
 
-                // Reset the grid in MainGui
-                if (MainGui.gridGui != null) {
-                    Platform.runLater(() -> MainGui.btnReset.fire());
-                }
+                Platform.runLater(() -> MainGui.btnReset.fire());
 
                 stage.close();
             });
