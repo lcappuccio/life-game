@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class GridGuiTest {
 
     private final int cellSize = 10, gridRows = 10, gridCols = 5;
-    private final GridGui sut = new GridGui(cellSize, gridRows, gridCols, "B & W");
+    private final GridGui sut = new GridGui(cellSize, gridRows, gridCols, "B & W", 50);
 
     @Test
     void testGridExists() {
@@ -30,7 +30,7 @@ class GridGuiTest {
     @Test
     void testChangeCellSize() {
         int innerCellSize = sut.getCellSize();
-        GridGui innerSut = new GridGui(5, gridRows, gridCols, "B & W");
+        GridGui innerSut = new GridGui(5, gridRows, gridCols, "B & W", 50);
         int cellSizeNew = innerSut.getCellSize();
         assertNotEquals(innerCellSize, cellSizeNew);
     }

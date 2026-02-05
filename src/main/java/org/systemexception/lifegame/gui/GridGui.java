@@ -24,6 +24,7 @@ public class GridGui extends JPanel {
     private final int gridCols;
     private final int cellSize;
     private int totalLiveCells;
+    private int cellLifeProbability;
 
     private Color colorDark = Color.DARK_GRAY;
     private Color colorLight = Color.WHITE;
@@ -33,11 +34,12 @@ public class GridGui extends JPanel {
     private final boolean[][] previousState;
     private final Set<Point> changedCells = new HashSet<>();
 
-    public GridGui(final int cellSize, int gridRows, int gridCols, String colourTheme) {
+    public GridGui(final int cellSize, int gridRows, int gridCols, String colourTheme, int cellLifeProbability) {
         this.cellSize = cellSize;
         this.gridRows = gridRows;
         this.gridCols = gridCols;
-        this.board = new Board(gridRows, gridCols, Automata.CONWAY, 50);
+        this.cellLifeProbability = cellLifeProbability;
+        this.board = new Board(gridRows, gridCols, Automata.CONWAY, cellLifeProbability);
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -87,7 +89,7 @@ public class GridGui extends JPanel {
      * Resets the board
      */
     public void resetBoard() {
-        this.board = new Board(gridRows, gridCols, Automata.CONWAY, 50);
+        this.board = new Board(gridRows, gridCols, Automata.CONWAY, cellLifeProbability);
         totalLiveCells = board.getCellAliveCount();
 
         // Reset previousState
