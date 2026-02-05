@@ -11,6 +11,10 @@
 
 Download the code/jar and build/execute with your favourite IDE/CLI.
 
+### VM arguments
+
+* run configuration: `--module-path target/classes;target/deps --add-exports=javafx.base/com.sun.javafx.logging=ALL-UNNAMED --add-modules javafx.controls,javafx.fxml,javafx.swing`
+
 ### Maven Build
 
 `mvn clean compile assembly:single`
