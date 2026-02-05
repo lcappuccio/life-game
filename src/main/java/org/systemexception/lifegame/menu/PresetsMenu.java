@@ -2,6 +2,7 @@ package org.systemexception.lifegame.menu;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
+import org.systemexception.lifegame.gui.MainGui;
 
 import javax.swing.*;
 import java.io.File;
@@ -25,7 +26,10 @@ public class PresetsMenu extends Menu {
     private static final String PRESETS_FOLDER = "/presets/";
     private static final String TEMP_LIFE_PRESET = "target" + File.separator + "temp.life";
 
-    public PresetsMenu() {
+    private final MainGui mainGui;
+
+    public PresetsMenu(MainGui mainGui) {
+        this.mainGui = mainGui;
         this.setText("Presets");
         this.getItems().addAll(
                 buildMenuItem(PRESET_7468M),
@@ -57,8 +61,7 @@ public class PresetsMenu extends Menu {
                 // MainGui.openFile is called from Swing EDT, wrap in SwingUtilities
                 SwingUtilities.invokeLater(() -> {
                     try {
-                        // TODO fix file opening
-                        //MainGui.openFile(tempFile);
+                        mainGui.openFile(tempFile);
                         tempFile.deleteOnExit();
                         throw new IOException();
                     } catch (IOException ex) {

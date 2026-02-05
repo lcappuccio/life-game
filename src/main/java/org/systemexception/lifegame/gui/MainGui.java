@@ -392,7 +392,7 @@ public class MainGui {
             // Create other menus
             LifeGameMenu menuLifeGame = new LifeGameMenu(preferencesGui);
             SpeedMenu menuGameSpeed = new SpeedMenu();
-            PresetsMenu menuPresets = new PresetsMenu();
+            PresetsMenu menuPresets = new PresetsMenu(this);
 
             // Set up file menu callback
             menuFile.setOnFileOpened(file -> {
