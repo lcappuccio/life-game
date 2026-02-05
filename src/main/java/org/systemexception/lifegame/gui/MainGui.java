@@ -92,7 +92,7 @@ public class MainGui {
         EventQueue.invokeLater(MainGui::getInstance);
     }
 
-    public static void getInstance() {
+    public static MainGui getInstance() {
         if (mainGui == null) {
             javafx.application.Platform.startup(() -> {
                 // No need to do anything here
@@ -101,6 +101,9 @@ public class MainGui {
 
             mainGui = new MainGui();
             mainGui.mainAppWindow.setVisible(true);
+            return mainGui;
+        } else {
+            return mainGui;
         }
     }
 

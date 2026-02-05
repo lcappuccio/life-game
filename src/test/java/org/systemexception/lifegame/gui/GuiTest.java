@@ -27,16 +27,17 @@ class GuiTest {
     private FileMenu fileMenu;
     private PresetsMenu presetsMenu;
     private SpeedMenu speedMenu;
+    private MainGui mainGui;
 
     @BeforeEach
     void setUp() throws InterruptedException {
-        MainGui.getInstance();
+        mainGui = MainGui.getInstance();
 
         waitForFxInitialization();
 
         lifeGameMenu = new LifeGameMenu(preferencesGui);
         fileMenu = new FileMenu(preferencesGui);
-        presetsMenu = new PresetsMenu();
+        presetsMenu = new PresetsMenu(mainGui);
         speedMenu = new SpeedMenu();
     }
 
@@ -127,7 +128,7 @@ class GuiTest {
         int iterationCounter = 0;
         Themes[] values = Themes.values();
         for (Themes value : values) {
-            MainGui.gridGui.setColours(value.toString());
+            mainGui.gridGui.setColours(value.toString());
             iterationCounter++;
         }
         assertEquals(iterationCounter, values.length);
