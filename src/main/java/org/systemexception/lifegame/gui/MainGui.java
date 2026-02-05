@@ -160,7 +160,7 @@ public class MainGui {
         menuFile.getMenuSave().setDisable(false);
         centerPanel.remove(gridGui);
         gridGui = new GridGui(preferencesGui.getCellSize(), centerPanel.getWidth() / preferencesGui.getCellSize(),
-                centerPanel.getHeight() / preferencesGui.getCellSize(), preferencesGui.getColorTheme());
+                centerPanel.getHeight() / preferencesGui.getCellSize(), preferencesGui.getColorTheme(), preferencesGui.getCellLifeProbability());
         gridGui.resetBoard();
         centerPanel.add(gridGui);
 
@@ -266,7 +266,7 @@ public class MainGui {
         mainAppWindow.getContentPane().add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(new BorderLayout(0, 0));
         gridGui = new GridGui(preferencesGui.getCellSize(), centerPanel.getWidth() / preferencesGui.getCellSize(),
-                centerPanel.getHeight() / preferencesGui.getCellSize(), preferencesGui.getColorTheme());
+                centerPanel.getHeight() / preferencesGui.getCellSize(), preferencesGui.getColorTheme(), preferencesGui.getCellLifeProbability() );
         menuFile.setBoard(gridGui.getBoard());
         centerPanel.add(gridGui);
     }
