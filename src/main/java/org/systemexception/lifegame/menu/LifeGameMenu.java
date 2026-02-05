@@ -14,7 +14,10 @@ public class LifeGameMenu extends Menu {
     public static final String MENU_ITEM_PREFERENCES = "Preferences";
     public static final String MENU_ITEM_QUIT = "Quit";
 
-    public LifeGameMenu() {
+    private final PreferencesGui preferencesGui;
+
+    public LifeGameMenu(PreferencesGui preferencesGui) {
+        this.preferencesGui = preferencesGui;
         this.setText(MainGui.APP_NAME);
         this.getItems().addAll(menuAbout(), menuPreferences(), menuQuit());
     }
@@ -28,7 +31,7 @@ public class LifeGameMenu extends Menu {
 
     private MenuItem menuPreferences() {
         MenuItem menuPreferences = new MenuItem(MENU_ITEM_PREFERENCES);
-        menuPreferences.setOnAction(e -> PreferencesGui.show(MainGui.windowPositionX, MainGui.windowPositionY));
+        menuPreferences.setOnAction(e -> preferencesGui.show(MainGui.windowPositionX, MainGui.windowPositionY));
         menuPreferences.setAccelerator(new KeyCodeCombination(KeyCode.COMMA, MainGui.metaKey));
         return menuPreferences;
     }

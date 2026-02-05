@@ -7,6 +7,7 @@ package org.systemexception.lifegame.enums;
 public enum SavedBoardProperties {
 
     AUTOMATA("automata"),
+    BOARDSIZE("boardSize"),
     CELLSIZE("cellSize"),
     COLS("cols"),
     ITERATION_COUNTER("iteration"),

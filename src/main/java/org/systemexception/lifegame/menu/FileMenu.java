@@ -29,15 +29,21 @@ public class FileMenu extends Menu {
     private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final String FILE_PROPERTIES_SEPARATOR = "=";
 
-    public MenuItem menuOpen;
-    public MenuItem menuSave;
+    private final PreferencesGui preferencesGui;
+    private MenuItem menuOpen;
+    private MenuItem menuSave;
 
-    private transient Board board;
-    private transient Consumer<File> onFileOpened;
+    private Board board;
+    private Consumer<File> onFileOpened;
 
-    public FileMenu() {
+    public FileMenu(PreferencesGui preferencesGui) {
+        this.preferencesGui = preferencesGui;
         this.setText("File");
         this.getItems().addAll(menuOpen(), menuSave());
+    }
+
+    public MenuItem getMenuSave() {
+        return menuSave;
     }
 
     public void setBoard(Board board) {
@@ -114,18 +120,20 @@ public class FileMenu extends Menu {
 
         try (PrintWriter fileWriter = new PrintWriter(bufferedWriter)) {
             // Write board properties
+            fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.BOARDSIZE +
+                    FILE_PROPERTIES_SEPARATOR + preferencesGui.getBoardSize() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.COLS +
                     FILE_PROPERTIES_SEPARATOR + board.getBoardCols() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.ROWS +
                     FILE_PROPERTIES_SEPARATOR + board.getBoardRows() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.CELLSIZE +
-                    FILE_PROPERTIES_SEPARATOR + PreferencesGui.getCellSize() + LINE_SEPARATOR);
+                    FILE_PROPERTIES_SEPARATOR + preferencesGui.getCellSize() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.AUTOMATA +
-                    FILE_PROPERTIES_SEPARATOR + PreferencesGui.getLifeAutomata() + LINE_SEPARATOR);
+                    FILE_PROPERTIES_SEPARATOR + preferencesGui.getLifeAutomata() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.ITERATION_COUNTER +
                     FILE_PROPERTIES_SEPARATOR + MainGui.lblCountIteration.getText() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.THEME +
-                    FILE_PROPERTIES_SEPARATOR + PreferencesGui.getColorTheme() + LINE_SEPARATOR);
+                    FILE_PROPERTIES_SEPARATOR + preferencesGui.getColorTheme() + LINE_SEPARATOR);
             writeToFile(fileWriter);
         }
 

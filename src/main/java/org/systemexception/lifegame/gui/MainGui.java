@@ -51,8 +51,6 @@ public class MainGui {
     public static int windowPositionX;
     public static int windowPositionY;
 
-    public static GridGui gridGui;
-
     public static javafx.scene.control.Button btnReset;
     public static javafx.scene.control.Button btnStop;
     public static javafx.scene.control.Button btnStart;
@@ -75,11 +73,13 @@ public class MainGui {
     private final int panelAndLabelHeightExclude;
 
     private FileMenu menuFile;
+    private FileUtils fileUtils;
     private JFXPanel menuBarPanel;
-
+    private JFXPanel lowerPanel;
     private JFrame mainAppWindow;
 
-    private JFXPanel lowerPanel;
+    private PreferencesGui preferencesGui;
+    public GridGui gridGui;
 
     private static MainGui mainGui;
 
@@ -92,7 +92,7 @@ public class MainGui {
         EventQueue.invokeLater(MainGui::getInstance);
     }
 
-    public static void getInstance() {
+    public static MainGui getInstance() {
         if (mainGui == null) {
             javafx.application.Platform.startup(() -> {
                 // No need to do anything here
@@ -101,6 +101,9 @@ public class MainGui {
 
             mainGui = new MainGui();
             mainGui.mainAppWindow.setVisible(true);
+            return mainGui;
+        } else {
+            return mainGui;
         }
     }
 
@@ -139,7 +142,7 @@ public class MainGui {
     }
 
     private void iterateGrid() {
-        menuFile.menuSave.setDisable(false);
+        menuFile.getMenuSave().setDisable(false);
         gridGui.iterateBoard();
         menuFile.setBoard(gridGui.getBoard());
         iterationCounter++;
@@ -154,10 +157,10 @@ public class MainGui {
     }
 
     private void resetGrid() {
-        menuFile.menuSave.setDisable(false);
+        menuFile.getMenuSave().setDisable(false);
         centerPanel.remove(gridGui);
-        gridGui = new GridGui(PreferencesGui.getCellSize(), centerPanel.getWidth() / PreferencesGui.getCellSize(),
-                centerPanel.getHeight() / PreferencesGui.getCellSize(), PreferencesGui.getColorTheme());
+        gridGui = new GridGui(preferencesGui.getCellSize(), centerPanel.getWidth() / preferencesGui.getCellSize(),
+                centerPanel.getHeight() / preferencesGui.getCellSize(), preferencesGui.getColorTheme());
         gridGui.resetBoard();
         centerPanel.add(gridGui);
 
@@ -176,7 +179,7 @@ public class MainGui {
     }
 
     private void stopGame() {
-        menuFile.menuSave.setDisable(false);
+        menuFile.getMenuSave().setDisable(false);
         menuFile.setBoard(gridGui.getBoard());
         if (gameTimer != null && gameTimer.isRunning()) {
             btnStart.setDisable(false);
@@ -185,7 +188,7 @@ public class MainGui {
     }
 
     private final ActionListener taskPerformer = (ActionEvent evt) -> {
-        menuFile.menuSave.setDisable(true);
+        menuFile.getMenuSave().setDisable(true);
         gridGui.iterateBoard();
         iterationCounter++;
 
@@ -198,13 +201,13 @@ public class MainGui {
         });
     };
 
-    public static void openFile(File selectedFile) throws IOException {
+    public void openFile(File selectedFile) throws IOException {
         btnStop.fire();
         centerPanel.remove(gridGui);
-        gridGui = FileUtils.gridGuiFromFile(selectedFile);
+        gridGui = fileUtils.gridGuiFromFile(selectedFile);
         centerPanel.add(gridGui);
 
-        // Force Swing to update
+        setWindowSize();
         centerPanel.revalidate();
         centerPanel.repaint();
 
@@ -223,15 +226,15 @@ public class MainGui {
             windowPositionX = mainAppWindow.getX();
             windowPositionY = mainAppWindow.getY();
         }
-        if (PreferencesGui.getBoardSize().equals(BoardSizes.LARGE.toString())) {
+        if (preferencesGui.getBoardSize().equals(BoardSizes.LARGE.toString())) {
             setLargeWindowLayout();
             return;
         }
-        if (PreferencesGui.getBoardSize().equals(BoardSizes.MEDIUM.toString())) {
+        if (preferencesGui.getBoardSize().equals(BoardSizes.MEDIUM.toString())) {
             setMediumWindowLayout();
             return;
         }
-        if (PreferencesGui.getBoardSize().equals(BoardSizes.SMALL.toString())) {
+        if (preferencesGui.getBoardSize().equals(BoardSizes.SMALL.toString())) {
             setSmallWindowLayout();
         }
     }
@@ -262,8 +265,8 @@ public class MainGui {
         centerPanel.setBounds(0, 25, mainAppWindow.getWidth(), mainAppWindow.getHeight() - mainAppWindowHeightExclude);
         mainAppWindow.getContentPane().add(centerPanel, BorderLayout.CENTER);
         centerPanel.setLayout(new BorderLayout(0, 0));
-        gridGui = new GridGui(PreferencesGui.getCellSize(), centerPanel.getWidth() / PreferencesGui.getCellSize(),
-                centerPanel.getHeight() / PreferencesGui.getCellSize(), PreferencesGui.getColorTheme());
+        gridGui = new GridGui(preferencesGui.getCellSize(), centerPanel.getWidth() / preferencesGui.getCellSize(),
+                centerPanel.getHeight() / preferencesGui.getCellSize(), preferencesGui.getColorTheme());
         menuFile.setBoard(gridGui.getBoard());
         centerPanel.add(gridGui);
     }
@@ -381,16 +384,18 @@ public class MainGui {
         menuBarPanel = new JFXPanel();
 
         // Create the menuFile instance synchronously BEFORE setUpCenterPanel is called
-        menuFile = new FileMenu();
+        preferencesGui = new PreferencesGui();
+        menuFile = new FileMenu(preferencesGui);
+        fileUtils = new FileUtils(preferencesGui);
 
         // Build the JavaFX MenuBar on the FX thread
         Platform.runLater(() -> {
             javafx.scene.control.MenuBar menuBar = new javafx.scene.control.MenuBar();
 
             // Create other menus
-            LifeGameMenu menuLifeGame = new LifeGameMenu();
+            LifeGameMenu menuLifeGame = new LifeGameMenu(preferencesGui);
             SpeedMenu menuGameSpeed = new SpeedMenu();
-            PresetsMenu menuPresets = new PresetsMenu();
+            PresetsMenu menuPresets = new PresetsMenu(this);
 
             // Set up file menu callback
             menuFile.setOnFileOpened(file -> {

@@ -16,11 +16,13 @@ import java.util.Properties;
 public class FileUtils {
 
     private static final String EMPTY_STRING = "";
+    private final PreferencesGui preferencesGui;
 
-    private FileUtils() {
+    public FileUtils(PreferencesGui preferencesGui) {
+        this.preferencesGui = preferencesGui;
     }
 
-    public static GridGui gridGuiFromFile(final File file) throws IOException {
+    public GridGui gridGuiFromFile(final File file) throws IOException {
 
         List<List<String>> gridGuiAsArrayList = new ArrayList<>();
         String line;
@@ -39,8 +41,11 @@ public class FileUtils {
         int gridCols = Integer.parseInt(properties.getProperty(SavedBoardProperties.COLS.toString()));
         int gridRows = Integer.parseInt(properties.getProperty(SavedBoardProperties.ROWS.toString()));
 
+        String boardSize = String.valueOf(properties.getProperty(SavedBoardProperties.BOARDSIZE.toString()));
+        preferencesGui.setBoardSize(boardSize);
+
         String automata = properties.getProperty(SavedBoardProperties.AUTOMATA.toString());
-        PreferencesGui.setLifeAutomata(Automata.valueOf(automata));
+        preferencesGui.setLifeAutomata(Automata.valueOf(automata));
 
         String iterationCounter = properties.getProperty(SavedBoardProperties.ITERATION_COUNTER.toString());
         Platform.runLater(() -> MainGui.lblCountIteration.setText(iterationCounter));

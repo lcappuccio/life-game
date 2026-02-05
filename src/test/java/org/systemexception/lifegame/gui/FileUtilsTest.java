@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
  */
 class FileUtilsTest {
 
+    private final FileUtils sut = new FileUtils(new PreferencesGui());
+
     @BeforeAll
     static void setUp() {
         MainGui.getInstance();
@@ -28,7 +30,7 @@ class FileUtilsTest {
         ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
         URI testFileUri = Objects.requireNonNull(systemClassLoader.getResource("presets/acorn.life")).toURI();
         File testFile = new File(testFileUri);
-        GridGui gridGui = FileUtils.gridGuiFromFile(testFile);
+        GridGui gridGui = sut.gridGuiFromFile(testFile);
 
         assertNotNull(gridGui);
         assertEquals(512, gridGui.getBoard().getBoardRows());
