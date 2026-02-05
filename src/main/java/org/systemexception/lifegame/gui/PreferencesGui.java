@@ -22,24 +22,33 @@ public class PreferencesGui {
     private static final int MIN_CELL_LIFE_PROBABILITY = 0;
     private static final int MAX_CELL_LIFE_PROBABILITY = 100;
 
-    private static int cellSize = 2;
-    private static int cellLifeProbability = 50;
+    private int cellSize = 2;
+    private int cellLifeProbability = 50;
+    private String colourTheme = Themes.BW.toString();
+    private Automata lifeAutomata = Automata.CONWAY;
+    private String boardSize = BoardSizes.MEDIUM.toString();
 
-    private static String colourTheme = Themes.BW.toString();
-    private static Automata lifeAutomata = Automata.CONWAY;
-    private static String boardSize = BoardSizes.MEDIUM.toString();
+    public PreferencesGui() {
+        // Defaults already set above
+    }
 
-    private PreferencesGui() {
+    // Optionally allow passing initial values
+    public PreferencesGui(int cellSize, int cellLifeProbability, String colourTheme, Automata lifeAutomata, String boardSize) {
+        this.cellSize = cellSize;
+        this.cellLifeProbability = cellLifeProbability;
+        this.colourTheme = colourTheme;
+        this.lifeAutomata = lifeAutomata;
+        this.boardSize = boardSize;
     }
 
     /**
      * Launch the JavaFX Preferences window from the Swing event thread.
-     * Call this where you currently do: new PreferencesGui(); preferencesGui.setVisible(true);
+     * Usage: PreferencesGui preferencesGui = new PreferencesGui(); preferencesGui.show(parentX, parentY);
      *
      * @param parentX MainGui.windowPositionX (used to offset the window)
      * @param parentY MainGui.windowPositionY
      */
-    public static void show(int parentX, int parentY) {
+    public void show(int parentX, int parentY) {
         Platform.runLater(() -> {
             Stage stage = new Stage(StageStyle.UTILITY);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -129,7 +138,7 @@ public class PreferencesGui {
 
             // Set action handlers
             btnApply.setOnAction(e -> {
-                // Update static values from controls
+                // Update instance values from controls
                 cellSize = spinnerCellSize.getValue();
                 colourTheme = comboBoxTheme.getValue();
                 lifeAutomata = comboBoxAutomata.getValue();
@@ -150,32 +159,43 @@ public class PreferencesGui {
         });
     }
 
-    public static int getCellSize() {
+    public int getCellSize() {
         return cellSize;
     }
 
-    public static String getColorTheme() {
+    public void setCellSize(int cellSize) {
+        this.cellSize = cellSize;
+    }
+
+    public String getColorTheme() {
         return colourTheme;
     }
 
-    public static Automata getLifeAutomata() {
+    public void setColorTheme(String colourTheme) {
+        this.colourTheme = colourTheme;
+    }
+
+    public Automata getLifeAutomata() {
         return lifeAutomata;
     }
 
-    public static void setLifeAutomata(Automata automata) {
-        lifeAutomata = automata;
+    public void setLifeAutomata(Automata automata) {
+        this.lifeAutomata = automata;
     }
 
-    public static int getCellLifeProbability() {
+    public int getCellLifeProbability() {
         return cellLifeProbability;
     }
 
-    public static String getBoardSize() {
+    public void setCellLifeProbability(int cellLifeProbability) {
+        this.cellLifeProbability = cellLifeProbability;
+    }
+
+    public String getBoardSize() {
         return boardSize;
     }
 
-    // Expose setters for testing purposes
-    static void setBoardSize(String size) {
-        boardSize = size;
+    public void setBoardSize(String boardSize) {
+        this.boardSize = boardSize;
     }
 }

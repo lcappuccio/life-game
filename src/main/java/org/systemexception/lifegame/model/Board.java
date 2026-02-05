@@ -5,7 +5,6 @@
 package org.systemexception.lifegame.model;
 
 import org.systemexception.lifegame.enums.Automata;
-import org.systemexception.lifegame.gui.PreferencesGui;
 
 import java.util.List;
 import java.util.Random;
@@ -15,6 +14,8 @@ public class Board {
     public static final String ALIVE_CELL = "o";
     public static final String DEAD_CELL = ".";
 
+    private final Automata automata;
+    private final int cellLifeProbability;
     private final int rows;
     private final int cols;
 
@@ -25,11 +26,13 @@ public class Board {
 
     private int liveCellCounter = 0;
 
-    public Board(int rows, int cols) {
+    public Board(int rows, int cols, Automata automata, int cellLifeProbability) {
         cellBoard = new boolean[rows][cols];
         boardIteration = new boolean[rows][cols];
         this.rows = rows;
         this.cols = cols;
+        this.automata = automata;
+        this.cellLifeProbability = cellLifeProbability;
         generateBoard(rows, cols);
     }
 
@@ -38,12 +41,13 @@ public class Board {
         boardIteration = new boolean[rows][cols];
         this.rows = rows;
         this.cols = cols;
+        this.automata = Automata.CONWAY;
+        this.cellLifeProbability = 50;
         setBoardFromSavedFile(savedBoard);
     }
 
     public void iterateBoard() {
-        Automata lifeAutomata = PreferencesGui.getLifeAutomata();
-        switch (lifeAutomata) {
+        switch (automata) {
             case ASSIMILATION -> iterateBoardAssimilation();
             case CONWAY -> iterateBoardConway();
             case CORAL -> iterateBoardCoral();
@@ -59,7 +63,7 @@ public class Board {
     private void generateBoard(int rows, int cols) {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                cellBoard[i][j] = random.nextInt(101) > (100 - PreferencesGui.getCellLifeProbability());
+                cellBoard[i][j] = random.nextInt(101) > (100 - cellLifeProbability);
                 updateLiveCellCounter(cellBoard, i, j);
             }
         }

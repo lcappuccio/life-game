@@ -22,6 +22,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class GuiTest {
 
+    private PreferencesGui preferencesGui= new PreferencesGui();
     private LifeGameMenu lifeGameMenu;
     private FileMenu fileMenu;
     private PresetsMenu presetsMenu;
@@ -33,8 +34,8 @@ class GuiTest {
 
         waitForFxInitialization();
 
-        lifeGameMenu = new LifeGameMenu();
-        fileMenu = new FileMenu();
+        lifeGameMenu = new LifeGameMenu(preferencesGui);
+        fileMenu = new FileMenu(preferencesGui);
         presetsMenu = new PresetsMenu();
         speedMenu = new SpeedMenu();
     }
@@ -147,15 +148,15 @@ class GuiTest {
     void testBoardSizes() {
         int iterationCounter = 0;
 
-        PreferencesGui.setBoardSize(BoardSizes.LARGE.toString());
+        preferencesGui.setBoardSize(BoardSizes.LARGE.toString());
         MainGui.btnReset.fire();
         iterationCounter++;
 
-        PreferencesGui.setBoardSize(BoardSizes.MEDIUM.toString());
+        preferencesGui.setBoardSize(BoardSizes.MEDIUM.toString());
         MainGui.btnReset.fire();
         iterationCounter++;
 
-        PreferencesGui.setBoardSize(BoardSizes.SMALL.toString());
+        preferencesGui.setBoardSize(BoardSizes.SMALL.toString());
         MainGui.btnReset.fire();
         iterationCounter++;
 

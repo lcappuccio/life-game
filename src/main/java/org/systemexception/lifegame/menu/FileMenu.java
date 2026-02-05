@@ -14,6 +14,7 @@ import org.systemexception.lifegame.model.Board;
 
 import java.io.*;
 import java.nio.file.Files;
+import java.util.function.Consumer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -28,26 +29,33 @@ public class FileMenu extends Menu {
     private static final String LINE_SEPARATOR = System.lineSeparator();
     private static final String FILE_PROPERTIES_SEPARATOR = "=";
 
+    private final PreferencesGui preferencesGui;
     private MenuItem menuOpen;
     private MenuItem menuSave;
 
     private Board board;
+    private Consumer<File> onFileOpened;
 
-    public FileMenu() {
+    public FileMenu(PreferencesGui preferencesGui) {
+        this.preferencesGui = preferencesGui;
         this.setText("File");
         this.getItems().addAll(menuOpen(), menuSave());
+    }
+
+    public MenuItem getMenuSave() {
+        return menuSave;
     }
 
     public void setBoard(Board board) {
         this.board = board;
     }
 
-    public MenuItem getMenuOpen() {
-        return menuOpen;
-    }
-
-    public MenuItem getMenuSave() {
-        return menuSave;
+    /**
+     * Set callback for when a file is opened successfully.
+     * Called from Swing EDT after file is loaded.
+     */
+    public void setOnFileOpened(Consumer<File> onFileOpened) {
+        this.onFileOpened = onFileOpened;
     }
 
     private MenuItem menuOpen() {
@@ -55,20 +63,20 @@ public class FileMenu extends Menu {
         menuOpen.setAccelerator(new KeyCodeCombination(KeyCode.O, MainGui.metaKey));
         menuOpen.setOnAction(e ->
                 Platform.runLater(() -> {
-                    javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+                    FileChooser fileChooser = new FileChooser();
                     fileChooser.setTitle("Open File");
                     fileChooser.getExtensionFilters().add(
-                            new javafx.stage.FileChooser.ExtensionFilter("LifeGame Files", "*.life")
+                            new FileChooser.ExtensionFilter("LifeGame Files", "*.life")
                     );
-                    fileChooser.setInitialDirectory(new java.io.File(System.getProperty("user.home")));
+                    fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 
-                    java.io.File selectedFile = fileChooser.showOpenDialog(getFileChooserStage());
+                    File selectedFile = fileChooser.showOpenDialog(getFileChooserStage());
 
-                    if (selectedFile != null) {
+                    if (selectedFile != null && onFileOpened != null) {
                         try {
-                            MainGui.openFile(selectedFile);
-                        } catch (IOException exception) {
-                            LOGGER.severe(exception.getMessage());
+                            onFileOpened.accept(selectedFile);
+                        } catch (Exception ex) {
+                            LOGGER.log(Level.SEVERE, ex.getMessage());
                         }
                     }
                 }));
@@ -117,13 +125,13 @@ public class FileMenu extends Menu {
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.ROWS +
                     FILE_PROPERTIES_SEPARATOR + board.getBoardRows() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.CELLSIZE +
-                    FILE_PROPERTIES_SEPARATOR + PreferencesGui.getCellSize() + LINE_SEPARATOR);
+                    FILE_PROPERTIES_SEPARATOR + preferencesGui.getCellSize() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.AUTOMATA +
-                    FILE_PROPERTIES_SEPARATOR + PreferencesGui.getLifeAutomata() + LINE_SEPARATOR);
+                    FILE_PROPERTIES_SEPARATOR + preferencesGui.getLifeAutomata() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.ITERATION_COUNTER +
                     FILE_PROPERTIES_SEPARATOR + MainGui.lblCountIteration.getText() + LINE_SEPARATOR);
             fileWriter.print(FILE_PROPERTIES_LINE + SavedBoardProperties.THEME +
-                    FILE_PROPERTIES_SEPARATOR + PreferencesGui.getColorTheme() + LINE_SEPARATOR);
+                    FILE_PROPERTIES_SEPARATOR + preferencesGui.getColorTheme() + LINE_SEPARATOR);
             writeToFile(fileWriter);
         }
 
@@ -145,8 +153,7 @@ public class FileMenu extends Menu {
         }
     }
 
-    // Expose a Stage suitable for use by FileChooser dialogs. Made public so callers (e.g. MainGui) can use it from the FX thread.
-    public Stage getFileChooserStage() {
+    private Stage getFileChooserStage() {
         Stage fileChooserStage = new Stage();
         fileChooserStage.setWidth(0);
         fileChooserStage.setHeight(0);

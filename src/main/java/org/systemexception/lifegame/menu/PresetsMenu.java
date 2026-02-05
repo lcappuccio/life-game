@@ -2,7 +2,6 @@ package org.systemexception.lifegame.menu;
 
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
-import org.systemexception.lifegame.gui.MainGui;
 
 import javax.swing.*;
 import java.io.File;
@@ -58,8 +57,10 @@ public class PresetsMenu extends Menu {
                 // MainGui.openFile is called from Swing EDT, wrap in SwingUtilities
                 SwingUtilities.invokeLater(() -> {
                     try {
-                        MainGui.openFile(tempFile);
+                        // TODO fix file opening
+                        //MainGui.openFile(tempFile);
                         tempFile.deleteOnExit();
+                        throw new IOException();
                     } catch (IOException ex) {
                         LOGGER.log(Level.SEVERE, ex.getMessage());
                     }

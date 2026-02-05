@@ -4,6 +4,7 @@
  */
 package org.systemexception.lifegame.gui;
 
+import org.systemexception.lifegame.enums.Automata;
 import org.systemexception.lifegame.enums.Themes;
 import org.systemexception.lifegame.model.Board;
 
@@ -36,7 +37,7 @@ public class GridGui extends JPanel {
         this.cellSize = cellSize;
         this.gridRows = gridRows;
         this.gridCols = gridCols;
-        this.board = new Board(gridRows, gridCols);
+        this.board = new Board(gridRows, gridCols, Automata.CONWAY, 50);
         this.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
@@ -86,7 +87,7 @@ public class GridGui extends JPanel {
      * Resets the board
      */
     public void resetBoard() {
-        this.board = new Board(gridRows, gridCols);
+        this.board = new Board(gridRows, gridCols, Automata.CONWAY, 50);
         totalLiveCells = board.getCellAliveCount();
 
         // Reset previousState
