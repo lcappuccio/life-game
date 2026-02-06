@@ -59,13 +59,12 @@ public class MainGui {
     public static javafx.scene.control.Label lblCountIteration;
     private static javafx.scene.control.Label lblCountLiveCells;
 
-    private static JPanel centerPanel;
+    private JPanel centerPanel;
 
     public static Timer gameTimer;
 
-    private static final int INITIAL_SPEED = GameSpeeds.JACKRABBIT.getGameSpeed();
-    private static final String PLATFORM = System.getProperty("os.name").toLowerCase();
-    private static int iterationCounter;
+    private final String platformOperatingSystem = System.getProperty("os.name").toLowerCase();
+    private int iterationCounter;
 
     private static final int LABEL_HEIGHT = 29;
 
@@ -115,9 +114,9 @@ public class MainGui {
         panelAndLabelHeightExclude = 70;
 
         // Set menu accelerator enabler key varies on PLATFORM
-        if (PLATFORM.contains("linux") || PLATFORM.contains("windows")) {
+        if (platformOperatingSystem.contains("linux") || platformOperatingSystem.contains("windows")) {
             metaKey = KeyCombination.CONTROL_DOWN;
-        } else if (PLATFORM.contains("mac")) {
+        } else if (platformOperatingSystem.contains("mac")) {
             metaKey = KeyCombination.META_DOWN;
         }
 
@@ -129,7 +128,7 @@ public class MainGui {
      */
     private void initialize() {
         mainAppWindow = new JFrame();
-        mainAppWindow.setTitle(APP_NAME + " - " + PLATFORM);
+        mainAppWindow.setTitle(APP_NAME + " - " + platformOperatingSystem);
         mainAppWindow.setBounds(0, 0, 1280, 1024);
         mainAppWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         mainAppWindow.getContentPane().setLayout(null);
@@ -352,7 +351,7 @@ public class MainGui {
         btnStart.setOnAction(e -> {
             btnStart.setDisable(true);
             if (gameTimer == null) {
-                gameTimer = new Timer(INITIAL_SPEED, taskPerformer);
+                gameTimer = new Timer(GameSpeeds.JACKRABBIT.getGameSpeed(), taskPerformer);
                 gameTimer.start();
             } else {
                 gameTimer.restart();
