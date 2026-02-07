@@ -58,8 +58,7 @@ public class GridGui extends JPanel {
         setColours(colourTheme);
     }
 
-    public GridGui(int cellSize, int gridRows, int gridCols, List<List<String>> savedBoard, String
-            colourTheme) {
+    public GridGui(int cellSize, int gridRows, int gridCols, List<List<String>> savedBoard, String colourTheme) {
         this.cellSize = cellSize;
         this.gridRows = gridRows;
         this.gridCols = gridCols;

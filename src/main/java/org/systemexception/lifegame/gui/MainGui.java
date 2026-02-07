@@ -42,12 +42,14 @@ import java.util.logging.Logger;
 public class MainGui {
 
     private static final Logger LOGGER = Logger.getLogger(MainGui.class.getName());
+    private static final int LABEL_HEIGHT = 29;
 
     public static final String APP_NAME = "LifeGame";
     public static final String FONT_NORMAL = "-fx-font-family: 'Lucida Grande'; -fx-font-size: 12px;";
     public static final String FONT_BOLD = "-fx-font-family: 'Lucida Grande'; -fx-font-size: 12px; -fx-font-weight: bold;";
 
     public static KeyCombination.Modifier metaKey;
+    public static Timer gameTimer;
     public static int windowPositionX;
     public static int windowPositionY;
 
@@ -55,32 +57,25 @@ public class MainGui {
     public static javafx.scene.control.Button btnStop;
     public static javafx.scene.control.Button btnStart;
     public static javafx.scene.control.Button btnStep;
-
     public static javafx.scene.control.Label lblCountIteration;
+
+    public GridGui gridGui;
+
+    private static MainGui mainGui;
     private static javafx.scene.control.Label lblCountLiveCells;
 
-    private JPanel centerPanel;
-
-    public static Timer gameTimer;
-
     private final String platformOperatingSystem = System.getProperty("os.name").toLowerCase();
-    private int iterationCounter;
-
-    private static final int LABEL_HEIGHT = 29;
-
     private final int mainAppWindowHeightExclude;
     private final int panelAndLabelHeightExclude;
 
     private FileMenu menuFile;
     private FileUtils fileUtils;
+    private PreferencesGui preferencesGui;
     private JFXPanel menuBarPanel;
     private JFXPanel lowerPanel;
+    private JPanel centerPanel;
     private JFrame mainAppWindow;
-
-    private PreferencesGui preferencesGui;
-    public GridGui gridGui;
-
-    private static MainGui mainGui;
+    private int iterationCounter;
 
     /**
      * Launch the application.
